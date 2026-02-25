@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAJHA - Owner Portal</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .owner-header {
+            padding: 120px 24px 60px;
+            background: linear-gradient(135deg, var(--green), var(--green-light));
+            color: var(--white);
+            text-align: center;
+        }
+
+        .owner-header h1 {
+            font-size: clamp(28px, 4vw, 40px);
+            margin-bottom: 12px;
+        }
+
+        .owner-container {
+            max-width: 900px;
+            margin: -40px auto 80px;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+
+        @media (min-width: 768px) {
+            .owner-container {
+                grid-template-columns: 1.2fr 0.8fr;
+            }
+        }
+
+        .card {
+            background: var(--white);
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+        }
+
+        .card h2 {
+            font-size: 20px;
+            margin-bottom: 24px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card h2 i {
+            color: var(--green);
+        }
+
+        .listing-form .input-group {
+            margin-bottom: 20px;
+        }
+
+        .listing-form label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .listing-form input,
+        .listing-form select {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            font-family: inherit;
+            font-size: 15px;
+            transition: border-color 0.2s;
+        }
+
+        .listing-form input:focus,
+        .listing-form select:focus {
+            outline: none;
+            border-color: var(--green);
+        }
+
+        .time-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .my-equipment {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .equip-item {
+            padding: 16px;
+            background: var(--cream);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .equip-info h4 {
+            font-size: 16px;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .equip-info p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .equip-price {
+            font-weight: 700;
+            color: var(--green);
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #d32f2f;
+            cursor: pointer;
+            padding: 8px;
+            font-size: 16px;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+
+        .delete-btn:hover {
+            opacity: 1;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 40px;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Bar -->
+    <nav class="top-bar">
+        <a href="index.html" class="logo"><i class="fas fa-seedling"></i> SAJHA</a>
+        <ul class="top-menu">
+            <li><a href="index.html#home" data-i18n="home">Home</a></li>
+            <li><a href="index.html#booking-section" data-i18n="book">Book</a></li>
+            <li><a href="owner.html" class="owner-link active"><i class="fas fa-user-tie"></i> <span
+                        data-i18n="forOwners">For Owners</span></a></li>
+            <li><a href="club.html" class="club-link"><i class="fas fa-users"></i> <span data-i18n="forClubs">Farmers
+                        Club</span></a></li>
+        </ul>
+        <div class="top-actions">
+            <select class="lang-select" id="langSelect" title="Change Language">
+                <option value="en">English</option>
+                <option value="hi">हिंदी (Hindi)</option>
+                <option value="bn">বাংলা (Bengali)</option>
+                <option value="te">తెలుగు (Telugu)</option>
+                <option value="mr">मराठी (Marathi)</option>
+                <option value="ta">தமிழ் (Tamil)</option>
+                <option value="gu">ગુજરાતી (Gujarati)</option>
+                <option value="kn">ಕನ್ನಡ (Kannada)</option>
+                <option value="ml">മലയാളം (Malayalam)</option>
+                <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+            </select>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="owner-header">
+        <h1 data-i18n="ownerPortal">Owner Portal</h1>
+        <p data-i18n="heroSub">Zero commission. Rent your equipment easily.</p>
+    </header>
+
+    <main class="owner-container">
+        <!-- Add Equipment Form -->
+        <section class="card">
+            <h2 data-i18n="listEquipment"><i class="fas fa-plus-circle"></i> List Equipment</h2>
+            <form id="listingForm" class="listing-form">
+                <div class="input-group">
+                    <label data-i18n="equipTitle">Equipment Name</label>
+                    <input type="text" id="equipName" placeholder="e.g. Mahindra Tractor 575" required>
+                </div>
+
+                <div class="input-group">
+                    <label data-i18n="selectEquipment">Equipment Type</label>
+                    <select id="equipType" required>
+                        <option value="tractor" data-i18n="tractor">Tractor</option>
+                        <option value="harvester" data-i18n="harvester">Harvester</option>
+                        <option value="plough" data-i18n="plough">Plough</option>
+                        <option value="irrigation" data-i18n="irrigation">Irrigation</option>
+                        <option value="cultivator" data-i18n="cultivator">Cultivator</option>
+                        <option value="seedDrill" data-i18n="seedDrill">Seed Drill</option>
+                        <option value="thresher" data-i18n="thresher">Thresher</option>
+                        <option value="sprayer" data-i18n="sprayer">Sprayer</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label data-i18n="priceHr">Price per Hour (₹)</label>
+                    <input type="number" id="equipPrice" placeholder="500" required>
+                </div>
+
+                <div class="time-row">
+                    <div class="input-group">
+                        <label data-i18n="availableFrom">Available From</label>
+                        <input type="time" id="timeFrom" value="06:00" required>
+                    </div>
+                    <div class="input-group">
+                        <label data-i18n="availableTo">Available To</label>
+                        <input type="time" id="timeTo" value="18:00" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="big-btn primary full" data-i18n="addListing"
+                    style="background:var(--green); color:white; border:none; margin-top:10px;">List Now</button>
+            </form>
+        </section>
+
+        <!-- Current Equipment List -->
+        <section class="card">
+            <h2 data-i18n="myListings"><i class="fas fa-tractor"></i> My Equipment</h2>
+            <div id="equipmentList" class="my-equipment">
+                <!-- Items will be injected here -->
+            </div>
+        </section>
+
+        <!-- Demand Insights (AI Feature) -->
+        <section class="card" style="grid-column: 1 / -1; margin-top: 24px;">
+            <h2 style="color: #e65100;"><i class="fas fa-chart-line"></i> <span data-i18n="demandAlert">High demand
+                    expected!</span></h2>
+            <div style="background: #fff3e0; padding: 20px; border-radius: 12px; border: 1px solid #ffe0b2;">
+                <p style="font-size: 14px; margin-bottom: 16px;">Busy farming season is starting. We suggest increasing
+                    your rates by 10-15%.</p>
+                <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                    <div
+                        style="flex: 1; min-width: 150px; background: white; padding: 12px; border-radius: 8px; border: 1px solid #ffe0b2;">
+                        <label style="font-size: 12px; color: #666;">Suggested Rate</label>
+                        <div style="font-weight: 700; color: var(--green);">₹575/hr</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Equipment Health (Owner Feature) -->
+        <section class="card" style="grid-column: 1 / -1; margin-top: 24px;">
+            <h2 style="color: #c62828;"><i class="fas fa-heartbeat"></i> <span data-i18n="maintenance">Equipment
+                    Health</span></h2>
+            <div style="background: #ffebee; padding: 20px; border-radius: 12px; border: 1px solid #ffcdd2;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div>
+                        <strong>Mahindra Tractor 575</strong>
+                        <div style="font-size: 14px; color: #666;">Last Service: 2 months ago</div>
+                    </div>
+                    <span
+                        style="background: #ef5350; color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600;">Service
+                        Due Soon</span>
+                </div>
+                <div style="width: 100%; height: 8px; background: #ddd; border-radius: 4px; overflow: hidden;">
+                    <div style="width: 85%; height: 100%; background: #ef5350;"></div>
+                </div>
+                <p style="font-size: 12px; color: #666; margin-top: 8px;">Recommended service at 500 hours.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>SAJHA - <span data-i18n="heroTitle">Connect Farmers</span></p>
+        <p>+91 98765 43210</p>
+    </footer>
+
+    <script src="lang.js"></script>
+    <script src="owner.js"></script>
+</body>
+
+</html>

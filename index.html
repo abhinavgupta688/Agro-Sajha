@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAJHA - किसानों के लिए</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+
+<body>
+    <!-- Top Bar with Menu on Front -->
+    <nav class="top-bar">
+        <a href="#home" class="logo"><i class="fas fa-seedling"></i> SAJHA</a>
+        <ul class="top-menu">
+            <li><a href="#home" data-i18n="home">Home</a></li>
+            <li><a href="#booking-section" data-i18n="book">Book</a></li>
+            <li><a href="#" id="menuBookingsTop" data-i18n="bookings">My Bookings</a></li>
+            <li><a href="owner.html" class="owner-link"><i class="fas fa-user-tie"></i> <span data-i18n="forOwners">For
+                        Owners</span></a></li>
+            <li><a href="driver.html" class="driver-link"><i class="fas fa-id-card"></i> <span
+                        data-i18n="forDrivers">For Drivers</span></a></li>
+            <li><a href="club.html" class="club-link"><i class="fas fa-users"></i> <span data-i18n="forClubs">Farmers
+                        Club</span></a></li>
+            <li><a href="#about" data-i18n="aboutTitle">About</a></li>
+            <li><a href="#chowpal" data-i18n="kisanChowpal">Chowpal</a></li>
+            <li><a href="#contact" data-i18n="contact">Contact</a></li>
+        </ul>
+        <div class="top-actions">
+            <select class="lang-select" id="langSelect" title="Change Language">
+                <option value="en">English</option>
+                <option value="hi">हिंदी (Hindi)</option>
+                <option value="bn">বাংলা (Bengali)</option>
+                <option value="te">తెలుగు (Telugu)</option>
+                <option value="mr">मराठी (Marathi)</option>
+                <option value="ta">தமிழ் (Tamil)</option>
+                <option value="gu">ગુજરાતી (Gujarati)</option>
+                <option value="kn">ಕನ್ನಡ (Kannada)</option>
+                <option value="ml">മലയാളം (Malayalam)</option>
+                <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+            </select>
+            <button class="menu-btn" id="menuBtn" aria-label="Menu"><i class="fas fa-bars"></i></button>
+        </div>
+    </nav>
+
+    <!-- Simple Side Menu -->
+    <div class="side-menu" id="sideMenu">
+        <div class="menu-header">
+            <span data-i18n="menu">Menu</span>
+            <button class="close-btn" id="closeMenu"><i class="fas fa-times"></i></button>
+        </div>
+        <a href="#home" class="menu-item"><i class="fas fa-home"></i> <span data-i18n="home">Home</span></a>
+        <a href="#booking-section" class="menu-item"><i class="fas fa-tractor"></i> <span
+                data-i18n="book">Book</span></a>
+        <a href="#" class="menu-item" id="menuBookings"><i class="fas fa-calendar-check"></i> <span
+                data-i18n="bookings">My Bookings</span></a>
+        <a href="club.html" class="menu-item"><i class="fas fa-users"></i> <span data-i18n="forClubs">Farmers
+                Club</span></a>
+        <a href="#about" class="menu-item"><i class="fas fa-info-circle"></i> <span
+                data-i18n="aboutTitle">About</span></a>
+        <a href="#chowpal" class="menu-item"><i class="fas fa-comments"></i> <span data-i18n="kisanChowpal">Farmers
+                Community</span></a>
+        <a href="#contact" class="menu-item"><i class="fas fa-phone"></i> <span data-i18n="contact">Contact</span></a>
+    </div>
+
+    <!-- Hero - Simple -->
+    <section id="home" class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1 data-i18n="heroTitle">Connect Farmers. Grow Together.</h1>
+            <p data-i18n="heroSub">Zero commission. Rent tractor & equipment easily.</p>
+            <div class="hero-btns">
+                <a href="#booking-section" class="big-btn primary" data-i18n="bookNow">Book Equipment</a>
+                <a href="tel:+919876543210" class="big-btn secondary" data-i18n="call">Call Us</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Section - Map + Book in single line -->
+    <section id="booking-section" class="booking-section">
+        <div class="quick-actions"
+            style="max-width: 1200px; margin: 0 auto 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; padding: 0 20px;">
+            <button class="simple-card" id="scanCropBtn" style="padding: 15px; border-radius: 12px; height: auto;">
+                <i class="fas fa-camera" style="font-size: 24px; color: var(--green); margin-bottom: 8px;"></i>
+                <div data-i18n="scanCrop" style="font-weight: 600; font-size: 14px;">Scan Crop</div>
+            </button>
+            <button class="simple-card" id="sellCropBtn" style="padding: 15px; border-radius: 12px; height: auto;">
+                <i class="fas fa-store" style="font-size: 24px; color: #f57c00; margin-bottom: 8px;"></i>
+                <div data-i18n="sellCrop" style="font-weight: 600; font-size: 14px;">Sell Crop</div>
+            </button>
+            <button class="simple-card" id="irrigateBtn" style="padding: 15px; border-radius: 12px; height: auto;">
+                <i class="fas fa-tint" style="font-size: 24px; color: #0288d1; margin-bottom: 8px;"></i>
+                <div data-i18n="smartIrrigation" style="font-weight: 600; font-size: 14px;">Irrigation</div>
+            </button>
+            <button class="simple-card" id="referBtn" style="padding: 15px; border-radius: 12px; height: auto;">
+                <i class="fas fa-user-plus" style="font-size: 24px; color: #7b1fa2; margin-bottom: 8px;"></i>
+                <div data-i18n="inviteFriend" style="font-weight: 600; font-size: 14px;">Invite</div>
+            </button>
+        </div>
+
+        <div class="map-book-row">
+            <div class="map-wrap">
+                <div id="map"></div>
+                <button class="locate-btn" id="locateBtn"><i class="fas fa-crosshairs"></i></button>
+            </div>
+            <div class="book-panel" id="bookingPanel">
+                <!-- Weather Widget -->
+                <div class="weather-widget">
+                    <div class="weather-icon"><i class="fas fa-cloud-sun"></i></div>
+                    <div class="weather-info">
+                        <h4 data-i18n="weatherAlert">Weather Alert</h4>
+                        <p data-i18n="rainWarning">Rain predicted. Plan carefully!</p>
+                    </div>
+                </div>
+
+                <!-- Demand Prediction Alert -->
+                <div class="alert demand-alert"
+                    style="background: #fff3e0; border: 1px solid #ffe0b2; padding: 12px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: #e65100;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span data-i18n="demandAlert">High demand expected!</span>
+                </div>
+
+                <h2 data-i18n="bookEquipment">Book Equipment</h2>
+
+                <div class="input-row">
+                    <label><i class="fas fa-map-marker-alt"></i></label>
+                    <input type="text" id="locationInput" data-i18n-placeholder="whereNeed"
+                        placeholder="Where do you need?">
+                </div>
+
+                <p class="label" data-i18n="selectEquipment">Choose Equipment</p>
+                <div class="equipment-btns">
+                    <button class="equip-btn active" data-type="tractor" data-price="500">
+                        <i class="fas fa-tractor"></i>
+                        <span data-i18n="tractor">Tractor</span>
+                        <small>₹500/hr</small>
+                    </button>
+                    <button class="equip-btn" data-type="harvester" data-price="800">
+                        <i class="fas fa-tractor"></i>
+                        <span data-i18n="harvester">Harvester</span>
+                        <small>₹800/hr</small>
+                    </button>
+                    <button class="equip-btn" data-type="plough" data-price="300">
+                        <i class="fas fa-tractor"></i>
+                        <span data-i18n="plough">Plough</span>
+                        <small>₹300/hr</small>
+                    </button>
+                    <button class="equip-btn" data-type="irrigation" data-price="400">
+                        <i class="fas fa-tint"></i>
+                        <span data-i18n="irrigation">Irrigation</span>
+                        <small>₹400/hr</small>
+                    </button>
+                    <button class="equip-btn" data-type="cultivator" data-price="350">
+                        <i class="fas fa-tractor"></i>
+                        <span data-i18n="cultivator">Cultivator</span>
+                        <small>₹350/hr</small>
+                    </button>
+                    <button class="equip-btn" data-type="seedDrill" data-price="450">
+                        <i class="fas fa-seedling"></i>
+                        <span data-i18n="seedDrill">Seed Drill</span>
+                        <small>₹450/hr</small>
+                    </button>
+                    <button class="equip-btn" data-type="thresher" data-price="600">
+                        <i class="fas fa-wheat-alt"></i>
+                        <span data-i18n="thresher">Thresher</span>
+                        <small>₹600/hr</small>
+                    </button>
+                    <button class="equip-btn" data-type="sprayer" data-price="250">
+                        <i class="fas fa-spray-can"></i>
+                        <span data-i18n="sprayer">Sprayer</span>
+                        <small>₹250/hr</small>
+                    </button>
+                </div>
+
+                <div class="row-2">
+                    <div class="input-row">
+                        <label><i class="fas fa-calendar"></i></label>
+                        <input type="date" id="bookingDate">
+                    </div>
+                    <div class="input-row">
+                        <label><i class="fas fa-clock"></i></label>
+                        <input type="time" id="bookingTime">
+                    </div>
+                </div>
+
+                <p class="label" data-i18n="duration">How many hours?</p>
+                <div class="duration-btns">
+                    <button class="dur-btn" data-hours="2" data-i18n="hrs2">2 hrs</button>
+                    <button class="dur-btn active" data-hours="4" data-i18n="hrs4">4 hrs</button>
+                    <button class="dur-btn" data-hours="8" data-i18n="hrs8">8 hrs</button>
+                    <button class="dur-btn" data-hours="12" data-i18n="hrs12">12 hrs</button>
+                    <button class="dur-btn" data-hours="24" data-i18n="day1">1 day</button>
+                </div>
+
+                <!-- Comparison Feature -->
+                <div id="comparisonSection" class="comparison-section" style="display: none;">
+                    <div class="comparison-card">
+                        <div class="deal-tag"><i class="fas fa-tag"></i> <span data-i18n="bestDeal">Best Deal
+                                Found!</span></div>
+                        <div class="deal-info">
+                            <span id="bestOwnerName">Rajesh Kumar</span>
+                            <span class="deal-price" id="bestOwnerPrice">₹450/hr</span>
+                        </div>
+                        <p class="savings" id="savingsAmount">Save ₹50 per hour</p>
+                        <button class="select-deal-btn" id="selectDealBtn" data-i18n="useThisDeal">Use this
+                            deal</button>
+                    </div>
+                </div>
+
+                <!-- Insurance & Protection -->
+                <label class="insurance-opt">
+                    <input type="checkbox" id="insuranceCheck">
+                    <span data-i18n="insurance">Add Damage Protection (+₹50)</span>
+                </label>
+
+                <div class="price-box">
+                    <span data-i18n="total">Total</span>
+                    <strong id="totalPrice">₹2,000</strong>
+                </div>
+                <button class="big-btn primary full" id="bookBtn" data-i18n="bookBtn">Book Now</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About - Simple 3 points -->
+    <section id="about" class="simple-section about">
+        <div class="container">
+            <h2 data-i18n="aboutTitle">About SAJHA</h2>
+            <p class="sub" data-i18n="aboutSub">For small farmers. No commission.</p>
+            <div class="simple-cards">
+                <div class="simple-card">
+                    <div class="icon"><i class="fas fa-gift"></i></div>
+                    <h3 data-i18n="noCommission">Zero Commission</h3>
+                    <p data-i18n="noCommissionDesc">No extra charges. You pay only rent.</p>
+                </div>
+                <div class="simple-card">
+                    <div class="icon"><i class="fas fa-handshake"></i></div>
+                    <h3 data-i18n="directConnect">Direct Connection</h3>
+                    <p data-i18n="directConnectDesc">Talk directly to equipment owner.</p>
+                </div>
+                <div class="simple-card">
+                    <div class="icon"><i class="fas fa-rupee-sign"></i></div>
+                    <h3 data-i18n="cashUpi">Cash & UPI</h3>
+                    <p data-i18n="cashUpiDesc">Pay by cash or phone.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Analytics & Advisory Section -->
+    <section id="advisory" class="simple-section">
+        <div class="container">
+            <h2 data-i18n="analytics">My Analytics</h2>
+            <div class="analytics-grid">
+                <div class="stat-card">
+                    <i class="fas fa-wallet"></i>
+                    <label data-i18n="income">Income</label>
+                    <strong id="statIncome">₹12,400</strong>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-piggy-bank"></i>
+                    <label data-i18n="savings">Savings</label>
+                    <strong id="statSavings">₹2,150</strong>
+                </div>
+                <div class="stat-card" style="grid-column: span 2;">
+                    <i class="fas fa-coins" style="color: #ffd600;"></i>
+                    <label data-i18n="myRewards">My Rewards (Coins)</label>
+                    <strong id="statCoins">450 SAJHA Coins</strong>
+                </div>
+            </div>
+
+            <div class="schemes-section" style="margin-top: 40px;">
+                <h2 data-i18n="govtSchemes">Govt Schemes</h2>
+                <div class="scheme-card">
+                    <h4 data-i18n="pmsky">PM Krishi Sinchai Yojana</h4>
+                    <p>Subsidies for micro-irrigation systems up to 55% for small farmers.</p>
+                </div>
+            </div>
+
+            <div class="mandi-section" style="margin-top: 40px;">
+                <h2 data-i18n="mandiRates">Mandi Rates</h2>
+                <div class="mandi-list">
+                    <div class="mandi-item"><span>Wheat (Gehu)</span> <span>₹2,275/qtl</span></div>
+                    <div class="mandi-item"><span>Rice (Dhan)</span> <span>₹2,183/qtl</span></div>
+                    <div class="mandi-item"><span>Mustard (Sarson)</span> <span>₹5,650/qtl</span></div>
+                </div>
+            </div>
+
+            <div class="crop-advisory"
+                style="margin-top: 40px; background: #e8f5e9; padding: 20px; border-radius: 12px; border-left: 4px solid var(--green); position: relative;">
+                <button class="audio-btn"
+                    style="position: absolute; top: 15px; right: 15px; background: var(--green); color: white; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer;"><i
+                        class="fas fa-volume-up"></i></button>
+                <h3 data-i18n="cropAdvisory" style="color: var(--green); margin-bottom: 10px;">Crop Advisory</h3>
+                <p style="font-size: 14px;"><strong>March Tips:</strong> Start preparing soil for Zaid crops like
+                    Moong and Urad. Check soil moisture before irrigation.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Forum -->
+    <section id="chowpal" class="simple-section" style="background: var(--white);">
+        <div class="container">
+            <h2 data-i18n="kisanChowpal">Farmers Community</h2>
+            <div id="chowpalPosts" class="forum-posts" style="margin-top: 24px;">
+                <!-- Posts will be injected here -->
+            </div>
+            <button class="big-btn primary full" id="askQuestionBtn"
+                style="background: var(--green); color: white; margin-top: 20px;">+ Ask a Question</button>
+        </div>
+    </section>
+
+    <!-- Contact - Simple -->
+    <section id="contact" class="simple-section contact">
+        <div class="container">
+            <h2 data-i18n="contactTitle">Contact Us</h2>
+            <a href="tel:+919876543210" class="contact-card">
+                <i class="fas fa-phone"></i>
+                <span>+91 98765 43210</span>
+            </a>
+            <a href="https://wa.me/919876543210" class="contact-card whatsapp">
+                <i class="fab fa-whatsapp"></i>
+                <span>WhatsApp</span>
+            </a>
+            <p class="address">123 Village Road, District, State</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>SAJHA - <span data-i18n="heroTitle">Connect Farmers</span></p>
+        <p>+91 98765 43210</p>
+    </footer>
+
+    <!-- Bookings Panel -->
+    <div class="overlay" id="bookingsPanel">
+        <div class="panel">
+            <div class="panel-head">
+                <h2 data-i18n="myBookings">My Bookings</h2>
+                <button class="close-btn" data-close="bookingsPanel"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="panel-body" id="bookingsList"></div>
+        </div>
+    </div>
+
+    <!-- Confirm Modal -->
+    <div class="overlay modal" id="bookingModal">
+        <div class="panel confirm-panel">
+            <div class="panel-head">
+                <h2 data-i18n="confirm">Confirm</h2>
+                <button class="close-btn" id="closeModal" data-close="bookingModal"><i
+                        class="fas fa-times"></i></button>
+            </div>
+            <div class="panel-body">
+                <p><strong id="modalEquipment">Tractor</strong></p>
+                <p id="modalLocation">Your Farm</p>
+                <p id="modalDateTime">Today, 10:00</p>
+                <p><span data-i18n="refundInfo">Refunds available on cancellation.</span></p>
+                <p><strong id="modalTotal">₹2,000</strong></p>
+
+                <div class="payment-methods" style="margin-top: 10px; margin-bottom: 20px;">
+                    <button class="big-btn secondary full"
+                        style="color: var(--text); border-color: var(--border); margin-bottom: 10px;">
+                        <i class="fas fa-money-bill"></i> Cash on Delivery
+                    </button>
+                    <button class="big-btn primary full" id="payOnlineBtn"
+                        style="background: var(--green); color: white;">
+                        <i class="fas fa-mobile-alt"></i> <span data-i18n="payOnline">Pay Online / UPI</span>
+                    </button>
+                </div>
+
+                <button class="big-btn secondary full" id="confirmBtn" data-i18n="confirmBook">Confirm & Book</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success -->
+    <div class="overlay modal" id="successScreen">
+        <div class="panel success-panel">
+            <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+            <h2 data-i18n="successTitle">Booked!</h2>
+            <p data-i18n="successMsg">Your booking is confirmed.</p>
+            <p class="booking-num"><span data-i18n="bookingId">Booking ID</span>: <strong
+                    id="bookingId">SAJHA-2026-001</strong></p>
+            <div class="success-btns">
+                <button class="big-btn secondary" id="viewBooking" data-i18n="viewDetails">View</button>
+                <button class="big-btn primary" id="newBooking" data-i18n="bookAnother">Book Again</button>
+            </div>
+        </div>
+    </div>
+
+    <button class="voice-btn" id="voiceBtn" title="Voice Booking">
+        <i class="fas fa-microphone"></i>
+    </button>
+
+    <!-- Crop Scan Modal -->
+    <div class="overlay modal" id="scanModal">
+        <div class="panel">
+            <div class="panel-head">
+                <h2 data-i18n="scanTitle">Identify Pest</h2>
+                <button class="close-btn" data-close="scanModal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="panel-body" style="text-align: center;">
+                <div
+                    style="width: 100%; height: 200px; background: #f0f0f0; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; border: 2px dashed #ccc;">
+                    <i class="fas fa-camera" style="font-size: 48px; color: #999;"></i>
+                </div>
+                <p id="scanResultText"
+                    style="display: none; background: #fff3e0; padding: 15px; border-radius: 10px; color: #e65100; font-weight: 500;"
+                    data-i18n="scanResult">Diagnosis: Leaf Rust...</p>
+                <button class="big-btn primary full" id="startScanBtn"
+                    style="background: var(--green); color: white;">Analyze Leaf</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Smart Irrigation Modal -->
+    <div class="overlay modal" id="irrigationModal">
+        <div class="panel">
+            <div class="panel-head">
+                <h2 data-i18n="smartIrrigation">Field Moisture</h2>
+                <button class="close-btn" data-close="irrigationModal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="panel-body" style="text-align: center;">
+                <div style="font-size: 48px; color: #0288d1; margin-bottom: 10px;">35%</div>
+                <p style="margin-bottom: 24px; color: #666;">Moisture is low. Suggest starting irrigation.</p>
+                <button class="big-btn primary full" id="startWaterBtn" style="background: #0288d1; color: white;">
+                    <i class="fas fa-power-off"></i> <span data-i18n="irrigateNow">Start Water</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Marketplace Modal -->
+    <div class="overlay modal" id="marketplaceModal">
+        <div class="panel">
+            <div class="panel-head">
+                <h2 data-i18n="sellCrop">Marketplace</h2>
+                <button class="close-btn" data-close="marketplaceModal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="panel-body">
+                <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Buyers near your location:</p>
+                <div id="buyersList">
+                    <!-- Buyers injected here -->
+                </div>
+                <button class="big-btn primary full" style="background: #f57c00; color: white; margin-top: 15px;">Post
+                    New Listing</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tracking Modal -->
+    <div class="overlay modal" id="trackingModal">
+        <div class="panel">
+            <div class="panel-head">
+                <h2 data-i18n="trackBooking">Track Booking</h2>
+                <button class="close-btn" data-close="trackingModal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="panel-body" style="text-align: center;">
+                <div class="track-visual"
+                    style="margin: 20px 0; position: relative; height: 100px; background: #f9f9f9; border-radius: 12px; display: flex; align-items: center; padding: 0 40px;">
+                    <i class="fas fa-home" style="color: var(--green); font-size: 24px;"></i>
+                    <div style="flex: 1; height: 4px; background: #e0e0e0; margin: 0 10px; position: relative;">
+                        <div id="trackProgress"
+                            style="width: 30%; height: 100%; background: var(--green); transition: width 1s linear;">
+                        </div>
+                        <i id="tractorIcon" class="fas fa-tractor"
+                            style="position: absolute; left: 30%; top: -10px; color: #f57c00; font-size: 20px; transition: left 1s linear;"></i>
+                    </div>
+                    <i class="fas fa-map-marker-alt" style="color: #d32f2f; font-size: 24px;"></i>
+                </div>
+                <h3 id="trackStatus" data-i18n="onTheWay">Driver is on the way</h3>
+                <div style="font-size: 24px; font-weight: 700; color: var(--green); margin: 10px 0;">
+                    <span data-i18n="reachingIn">Reaching your land in</span>: <span id="etaMinutes">12</span> mins
+                </div>
+                <p style="color: #666; font-size: 13px;">Booking ID: <strong id="trackIdDisplay">SAJHA-2026-X</strong>
+                </p>
+                <button class="big-btn primary full" style="background: var(--green); color: white; margin-top: 15px;"
+                    id="callDriverBtn">
+                    <i class="fas fa-phone-alt"></i> Call Driver
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="lang.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

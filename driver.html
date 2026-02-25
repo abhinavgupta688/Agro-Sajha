@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAJHA - Driver Portal</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .driver-header {
+            padding: 120px 24px 60px;
+            background: linear-gradient(135deg, #1565c0, #0d47a1);
+            color: var(--white);
+            text-align: center;
+        }
+
+        .driver-header h1 {
+            font-size: clamp(28px, 4vw, 40px);
+            margin-bottom: 12px;
+        }
+
+        .driver-container {
+            max-width: 900px;
+            margin: -40px auto 80px;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+
+        @media (min-width: 768px) {
+            .driver-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .card {
+            background: var(--white);
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+        }
+
+        .card h2 {
+            font-size: 20px;
+            margin-bottom: 24px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card h2 i {
+            color: #1565c0;
+        }
+
+        .listing-form .input-group {
+            margin-bottom: 20px;
+        }
+
+        .listing-form label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .listing-form input {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            font-family: inherit;
+            font-size: 15px;
+            transition: border-color 0.2s;
+        }
+
+        .listing-form input:focus {
+            outline: none;
+            border-color: #1565c0;
+        }
+
+        .driver-list {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .driver-card {
+            padding: 16px;
+            background: var(--cream);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .driver-info h4 {
+            font-size: 17px;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .driver-info p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .driver-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+        }
+
+        .driver-rate {
+            font-weight: 700;
+            color: #1565c0;
+        }
+
+        .call-btn {
+            background: #2e7d32;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 40px;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+
+        .blue-btn {
+            background: #1565c0;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="top-bar">
+        <a href="index.html" class="logo"><i class="fas fa-seedling"></i> SAJHA</a>
+        <ul class="top-menu">
+            <li><a href="index.html#home" data-i18n="home">Home</a></li>
+            <li><a href="owner.html" data-i18n="forOwners">For Owners</a></li>
+            <li><a href="driver.html" class="active" data-i18n="forDrivers">For Drivers</a></li>
+            <li><a href="club.html" class="club-link"><i class="fas fa-users"></i> <span data-i18n="forClubs">Farmers
+                        Club</span></a></li>
+        </ul>
+        <div class="top-actions">
+            <select class="lang-select" id="langSelect" title="Change Language">
+                <option value="en">English</option>
+                <option value="hi">हिंदी (Hindi)</option>
+                <option value="bn">বাংলা (Bengali)</option>
+                <option value="te">తెలుగు (Telugu)</option>
+                <option value="mr">मराठी (Marathi)</option>
+                <option value="ta">தமிழ் (Tamil)</option>
+                <option value="gu">ગુજરાતી (Gujarati)</option>
+                <option value="kn">ಕನ್ನಡ (Kannada)</option>
+                <option value="ml">മലയാളം (Malayalam)</option>
+                <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+            </select>
+        </div>
+    </nav>
+
+    <header class="driver-header">
+        <h1 data-i18n="driverPortal">Driver Portal</h1>
+        <p data-i18n="registerAsDriver">Register as a driver to help owners and earn more.</p>
+    </header>
+
+    <main class="driver-container">
+        <!-- Driver Registration Form -->
+        <section class="card">
+            <h2 data-i18n="registerAsDriver"><i class="fas fa-id-card"></i> Join as Driver</h2>
+            <form id="driverForm" class="listing-form">
+                <div class="input-group">
+                    <label data-i18n="driverName">Full Name</label>
+                    <input type="text" id="driverName" placeholder="e.g. Ram Singh" required>
+                </div>
+
+                <div class="input-group">
+                    <label data-i18n="driverExperience">Experience (Years)</label>
+                    <input type="number" id="driverExp" placeholder="5" required>
+                </div>
+
+                <div class="input-group">
+                    <label data-i18n="driverLocation">Home Village/Area</label>
+                    <input type="text" id="driverLoc" placeholder="e.g. Rampur" required>
+                </div>
+
+                <div class="input-group">
+                    <label data-i18n="driverRate">Daily Rate (₹)</label>
+                    <input type="number" id="driverRate" placeholder="400" required>
+                </div>
+
+                <div class="input-group">
+                    <label data-i18n="driverContact">Phone Number</label>
+                    <input type="tel" id="driverPhone" placeholder="+91" required>
+                </div>
+
+                <button type="submit" class="blue-btn" data-i18n="addDriver">Register Now</button>
+            </form>
+        </section>
+
+        <!-- Driver List -->
+        <section class="card">
+            <h2 data-i18n="availableDrivers"><i class="fas fa-users"></i> Available Drivers</h2>
+            <div id="driverList" class="driver-list">
+                <!-- Driver entries will be injected here -->
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>SAJHA - <span data-i18n="heroTitle">Connect Farmers</span></p>
+        <p>+91 98765 43210</p>
+    </footer>
+
+    <script src="lang.js"></script>
+    <script src="driver.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,17 @@
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Large media files (video walkthroughs - too big for git)
+*.webm
+*.mp4
+*.avi
+walkthrough.webp
+
+# Editor
+.vscode/
+.idea/
+
+# Node (if ever added)
+node_modules/

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAJHA - Farmers Club</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .club-header {
+            padding: 120px 24px 60px;
+            background: linear-gradient(135deg, #fb8c00, #ef6c00);
+            color: var(--white);
+            text-align: center;
+        }
+
+        .club-header h1 {
+            font-size: clamp(28px, 4vw, 40px);
+            margin-bottom: 12px;
+        }
+
+        .club-container {
+            max-width: 1000px;
+            margin: -40px auto 80px;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+
+        @media (min-width: 768px) {
+            .club-container {
+                grid-template-columns: 1.5fr 1fr;
+            }
+        }
+
+        .card {
+            background: var(--white);
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+        }
+
+        .card h2 {
+            font-size: 20px;
+            margin-bottom: 24px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card h2 i {
+            color: #fb8c00;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .benefit-item {
+            background: #fff3e0;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #ffe0b2;
+        }
+
+        .benefit-item i {
+            display: block;
+            font-size: 24px;
+            color: #ef6c00;
+            margin-bottom: 8px;
+        }
+
+        .benefit-item span {
+            font-size: 13px;
+            font-weight: 600;
+            color: #e65100;
+        }
+
+        .club-list {
+            display: grid;
+            gap: 16px;
+        }
+
+        .club-card {
+            padding: 20px;
+            background: var(--cream);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .club-info h4 {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .club-info p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .club-meta {
+            text-align: right;
+        }
+
+        .member-badge {
+            background: #ef6c00;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .orange-btn {
+            background: #ef6c00;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+
+        .orange-btn:hover {
+            background: #e65100;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            font-family: inherit;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="top-bar">
+        <a href="index.html" class="logo"><i class="fas fa-seedling"></i> SAJHA</a>
+        <ul class="top-menu">
+            <li><a href="index.html#home" data-i18n="home">Home</a></li>
+            <li><a href="owner.html" data-i18n="forOwners">For Owners</a></li>
+            <li><a href="driver.html" data-i18n="forDrivers">For Drivers</a></li>
+            <li><a href="club.html" class="active" data-i18n="forClubs">Farmers Club</a></li>
+        </ul>
+        <div class="top-actions">
+            <select class="lang-select" id="langSelect">
+                <!-- Dropdown will be populated by langSelect.js or similar -->
+                <option value="en">English</option>
+                <option value="hi">हिंदी (Hindi)</option>
+                <option value="bn">বাংলা (Bengali)</option>
+                <option value="te">తెలుగు (Telugu)</option>
+                <option value="mr">मराठी (Marathi)</option>
+                <option value="ta">தமிழ் (Tamil)</option>
+                <option value="gu">ગુજરાતી (Gujarati)</option>
+                <option value="kn">ಕನ್ನಡ (Kannada)</option>
+                <option value="ml">മലയാളം (Malayalam)</option>
+                <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+            </select>
+        </div>
+    </nav>
+
+    <header class="club-header">
+        <h1 data-i18n="clubPortal">Farmers Club</h1>
+        <p data-i18n="heroSub">Join together, book together, save together.</p>
+    </header>
+
+    <main class="club-container">
+        <!-- Explorer / Join List -->
+        <section>
+            <div class="card">
+                <h2 data-i18n="joinClub"><i class="fas fa-search-location"></i> Explore Local Clubs</h2>
+                <div id="clubList" class="club-list">
+                    <!-- Clubs will be injected here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Sidebar: Create & Benefits -->
+        <aside style="display: flex; flex-direction: column; gap: 32px;">
+            <div class="card">
+                <h2 data-i18n="clubBenefits"><i class="fas fa-gift"></i> Club Benefits</h2>
+                <div class="benefits-grid">
+                    <div class="benefit-item">
+                        <i class="fas fa-percentage"></i>
+                        <span data-i18n="groupDiscount">10% Group Discount</span>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-headset"></i>
+                        <span data-i18n="prioritySupport">Priority Booking</span>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-users-cog"></i>
+                        <span data-i18n="selectEquipment">Shared Assets</span>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span data-i18n="noCommission">Secure Support</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 data-i18n="createClub"><i class="fas fa-plus-circle"></i> Create New Club</h2>
+                <form id="createClubForm">
+                    <div class="input-group">
+                        <label data-i18n="clubName">Club Name</label>
+                        <input type="text" id="newClubName" placeholder="e.g. Rampur Progressive Farmers" required>
+                    </div>
+                    <div class="input-group">
+                        <label data-i18n="village">Village</label>
+                        <input type="text" id="clubVillage" placeholder="e.g. Rampur" required>
+                    </div>
+                    <button type="submit" class="orange-btn" data-i18n="createClub">Create Club</button>
+                </form>
+            </div>
+        </aside>
+    </main>
+
+    <footer class="footer">
+        <p>SAJHA - <span data-i18n="heroTitle">Connect Farmers</span></p>
+        <p>+91 98765 43210</p>
+    </footer>
+
+    <script src="lang.js"></script>
+    <script src="club.js"></script>
+</body>
+
+</html>
