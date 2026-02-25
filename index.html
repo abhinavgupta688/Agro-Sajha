@@ -12,6 +12,15 @@
 </head>
 
 <body>
+    <!-- Price Push Notification -->
+    <div id="pushNotification"
+        style="position: fixed; top: -150px; right: 20px; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 16px; border-radius: 12px; z-index: 9999; display: flex; align-items: center; gap: 12px; transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border-left: 4px solid var(--green); max-width: 300px;">
+        <i class="fab fa-whatsapp" style="color: #25D366; font-size: 28px;"></i>
+        <div>
+            <strong style="display: block; font-size: 14px; color: #333;">SAJHA Alert</strong>
+            <span id="pushMsg" style="font-size: 13px; color: #555;">Wheat has reached ₹2,300/qtl in your mandi!</span>
+        </div>
+    </div>
     <!-- Top Bar with Menu on Front -->
     <nav class="top-bar">
         <a href="index.html#home" class="logo"><i class="fas fa-seedling"></i> SAJHA</a>
@@ -271,7 +280,12 @@
             </div>
 
             <div class="schemes-section" style="margin-top: 40px;">
-                <h2 data-i18n="govtSchemes" style="margin-bottom: 24px;">Government Schemes</h2>
+                <h2 data-i18n="govtSchemes" style="margin-bottom: 8px;">Government Schemes</h2>
+                <p style="margin-bottom: 16px; color: #666; font-size: 14px;">Let AI find the best scheme for you based
+                    on your land.</p>
+                <button class="big-btn primary" id="subsidyAssistBtn"
+                    style="margin-bottom: 24px; padding: 12px 20px; background: #1565c0; width: 100%; border-radius: 8px; font-weight: bold;"><i
+                        class="fas fa-magic"></i> Find My Subsidy (AI Assistant)</button>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
                     <div class="scheme-card"
                         style="margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between;">
@@ -341,14 +355,57 @@
                 </div>
             </div>
 
+            <!-- New Feature: Weather Forecast -->
+            <div class="weather-forecast-container"
+                style="margin-top: 40px; background: #e3f2fd; padding: 20px; border-radius: 12px; border-left: 4px solid #1976d2;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <h3 style="color: #1976d2; margin: 0;"><i class="fas fa-cloud-sun-rain"></i> 4-Day Forecast</h3>
+                    <i class="fas fa-location-arrow" style="color: #1976d2;"></i>
+                </div>
+                <div id="weatherCards" style="display: flex; gap: 10px; overflow-x: auto; padding-bottom: 8px;">
+                    <div
+                        style="min-width: 80px; flex: 1; background: white; padding: 10px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <div style="font-size: 12px; color: #666;">Today</div><i class="fas fa-sun"
+                            style="color: #fbc02d; font-size: 24px; margin: 8px 0;"></i>
+                        <div style="font-weight: bold;">32°C</div>
+                    </div>
+                    <div
+                        style="min-width: 80px; flex: 1; background: white; padding: 10px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <div style="font-size: 12px; color: #666;">Tmrw</div><i class="fas fa-cloud-sun"
+                            style="color: #90a4ae; font-size: 24px; margin: 8px 0;"></i>
+                        <div style="font-weight: bold;">30°C</div>
+                    </div>
+                    <div
+                        style="min-width: 80px; flex: 1; background: white; padding: 10px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 2px solid #1976d2;">
+                        <div style="font-size: 12px; color: #1976d2; font-weight: bold;">Day 3</div><i
+                            class="fas fa-cloud-showers-heavy"
+                            style="color: #1976d2; font-size: 24px; margin: 8px 0;"></i>
+                        <div style="font-weight: bold;">26°C</div>
+                    </div>
+                    <div
+                        style="min-width: 80px; flex: 1; background: white; padding: 10px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <div style="font-size: 12px; color: #666;">Day 4</div><i class="fas fa-cloud"
+                            style="color: #90a4ae; font-size: 24px; margin: 8px 0;"></i>
+                        <div style="font-weight: bold;">28°C</div>
+                    </div>
+                </div>
+                <div
+                    style="font-size: 13px; color: #1565c0; margin-top: 10px; background: rgba(25, 118, 210, 0.1); padding: 8px; border-radius: 6px;">
+                    <strong>🚜 Soil Alert:</strong> Wait 2 days before fertilizing due to expected heavy rains.</div>
+            </div>
+
             <div class="crop-advisory"
-                style="margin-top: 40px; background: #e8f5e9; padding: 20px; border-radius: 12px; border-left: 4px solid var(--green); position: relative;">
+                style="margin-top: 20px; background: #e8f5e9; padding: 20px; border-radius: 12px; border-left: 4px solid var(--green); position: relative;">
                 <button class="audio-btn"
                     style="position: absolute; top: 15px; right: 15px; background: var(--green); color: white; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer;"><i
                         class="fas fa-volume-up"></i></button>
                 <h3 data-i18n="cropAdvisory" style="color: var(--green); margin-bottom: 10px;">Crop Advisory</h3>
-                <p style="font-size: 14px;"><strong>March Tips:</strong> Start preparing soil for Zaid crops like
+                <p style="font-size: 14px; margin-bottom: 16px;"><strong>March Tips:</strong> Start preparing soil for
+                    Zaid crops like
                     Moong and Urad. Check soil moisture before irrigation.</p>
+                <button class="big-btn secondary" id="openCalcBtn"
+                    style="background: white; color: var(--green); border: 2px solid var(--green); padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%;"><i
+                        class="fas fa-calculator"></i> Open Profit Calculator</button>
             </div>
         </div>
     </section>
@@ -360,8 +417,9 @@
             <div id="chowpalPosts" class="forum-posts" style="margin-top: 24px;">
                 <!-- Posts will be injected here -->
             </div>
-            <button class="big-btn primary full" id="askQuestionBtn"
-                style="background: var(--green); color: white; margin-top: 20px;">+ Ask a Question</button>
+            <button class="big-btn primary full" id="chowpalAskBtn"
+                style="background: var(--green); color: white; margin-top: 20px;"><i class="fas fa-camera"></i> Ask
+                Question with Photo</button>
         </div>
     </section>
 
@@ -534,6 +592,106 @@
                     id="callDriverBtn">
                     <i class="fas fa-phone-alt"></i> Call Driver
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5 New Modals (Profit Calc, Subsidy Finder, Chowpal Post) -->
+    <div class="overlay modal" id="profitModal">
+        <div class="panel">
+            <div class="panel-head">
+                <h2><i class="fas fa-calculator"></i> Profit Calculator</h2>
+                <button class="close-btn" data-close="profitModal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="panel-body">
+                <div class="input-row">
+                    <label>Select Crop Yield Type</label>
+                    <select id="calcCrop"
+                        style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); font-size: 16px; margin-top: 5px;">
+                        <option value="45000">Wheat (Hi-Yield) - ₹45,000/Acre Rev</option>
+                        <option value="55000">Rice (Hi-Yield) - ₹55,000/Acre Rev</option>
+                        <option value="65000">Cotton (Hi-Yield) - ₹65,000/Acre Rev</option>
+                        <option value="80000">Sugarcane (Cash Crop) - ₹80k/Acre Rev</option>
+                    </select>
+                </div>
+                <div class="input-row" style="margin-top: 15px;">
+                    <label>Land Size (Acres)</label>
+                    <input type="number" id="calcAcres" placeholder="E.g. 5"
+                        style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); font-size: 16px; margin-top: 5px;">
+                </div>
+                <button class="big-btn primary full" id="calcProfitBtn" style="margin-top: 20px;">Calculate
+                    Estimation</button>
+
+                <div id="calcResult"
+                    style="display:none; margin-top: 20px; padding: 16px; background: #f1f8e9; border: 1px solid #8bc34a; border-radius: 12px; text-align: center;">
+                    <p style="color: #666; font-size: 14px; margin-bottom: 5px;">Estimated Seasonal Profit</p>
+                    <h2 id="calcProfitValue" style="color: #2e7d32; font-size: 28px; margin: 0;">₹0</h2>
+                    <p style="font-size: 12px; color: #888; margin-top: 8px;">(Estimated Revenue MINUS Rent/Seed/Labor
+                        Costs)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay modal" id="subsidyModal">
+        <div class="panel">
+            <div class="panel-head" style="background: #1565c0; color: white;">
+                <h2><i class="fas fa-magic"></i> AI Subsidy Finder</h2>
+                <button class="close-btn" data-close="subsidyModal" style="color: white;"><i
+                        class="fas fa-times"></i></button>
+            </div>
+            <div class="panel-body">
+                <div id="subsidyStep1">
+                    <p style="font-size: 16px; font-weight: 600; margin-bottom: 16px; text-align: center;">Question 1:
+                        Do you own less than 2 Hectares (approx 5 Acres) of land?</p>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="big-btn primary full" id="subsidyYes"
+                            style="background: #1565c0; color: white;">Yes (Small)</button>
+                        <button class="big-btn secondary full" id="subsidyNo">No (Large)</button>
+                    </div>
+                </div>
+                <div id="subsidyStep2" style="display:none; text-align: center; padding: 20px 0;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 40px; color: #1565c0; margin-bottom: 16px;"></i>
+                    <p style="font-weight: 600; font-size: 15px;">AI is scanning 80+ schemes for your profile...</p>
+                </div>
+                <div id="subsidyResult" style="display:none;">
+                    <div class="scheme-card"
+                        style="border: 2px solid var(--green); background: #f1f8e9; margin-bottom: 0;">
+                        <div class="deal-tag"
+                            style="background: var(--green); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; display: inline-block; margin-bottom: 10px; font-weight: bold;">
+                            <i class="fas fa-check-circle"></i> 100% Match Found!</div>
+                        <h4 style="font-size: 18px; margin-bottom: 8px; color: #1b5e20;"><i
+                                class="fas fa-rupee-sign"></i> PM-KISAN Samman Nidhi</h4>
+                        <p style="margin-bottom: 16px; font-size: 14px; color: #333;">Based on your status as a small
+                            farmer, you qualify for ₹6,000/year direct financial assistance.</p>
+                        <a href="https://pmkisan.gov.in/" target="_blank" class="big-btn primary full"
+                            style="display: block; text-align: center; text-decoration: none; background: var(--green);">Apply
+                            on Portal <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay modal" id="chowpalModal">
+        <div class="panel">
+            <div class="panel-head">
+                <h2><i class="fas fa-pen"></i> Ask in Chowpal</h2>
+                <button class="close-btn" data-close="chowpalModal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="panel-body">
+                <textarea id="chowpalInput" placeholder="Describe your crop issue..."
+                    style="width: 100%; height: 100px; padding: 12px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 12px; resize: none; font-family: inherit; font-size: 15px;"></textarea>
+
+                <label
+                    style="display: flex; align-items: center; justify-content: center; gap: 8px; background: #f5f5f5; padding: 12px; border-radius: 8px; cursor: pointer; border: 1px dashed #ccc; margin-bottom: 16px; transition: 0.2s;">
+                    <i class="fas fa-camera" id="imgCamIcon" style="font-size: 20px; color: #666;"></i> <span
+                        id="imgBtnText" style="font-weight: 500; color: #555;">Add Photo (Optional)</span>
+                    <input type="file" id="chowpalImage" accept="image/*" style="display: none;">
+                </label>
+
+                <button class="big-btn primary full" id="submitPostBtn" style="background: var(--green);">Post
+                    Question</button>
             </div>
         </div>
     </div>

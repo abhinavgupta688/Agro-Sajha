@@ -328,15 +328,82 @@ function setupEvents() {
     });
 
     // Community
-    document.getElementById('askQuestionBtn')?.addEventListener('click', () => {
-        const q = prompt("What is your question?");
-        if (q) {
-            forumPosts.unshift({ author: 'You (Mobile Admin)', time: 'Just now', text: q });
+    document.getElementById('chowpalAskBtn')?.addEventListener('click', () => {
+        document.getElementById('chowpalModal').classList.add('active');
+        document.getElementById('chowpalInput').value = '';
+        const btnText = document.getElementById('imgBtnText');
+        if (btnText) btnText.textContent = 'Add Photo (Optional)';
+        const camIcon = document.getElementById('imgCamIcon');
+        if (camIcon) camIcon.style.color = '#666';
+    });
+
+    document.getElementById('chowpalImage')?.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+            const btnText = document.getElementById('imgBtnText');
+            if (btnText) btnText.textContent = 'Photo attached ✓';
+            const camIcon = document.getElementById('imgCamIcon');
+            if (camIcon) camIcon.style.color = 'var(--green)';
+        }
+    });
+
+    document.getElementById('submitPostBtn')?.addEventListener('click', () => {
+        const q = document.getElementById('chowpalInput').value;
+        const imgInput = document.getElementById('chowpalImage');
+        if (q.trim()) {
+            let postText = q;
+            if (imgInput.files.length > 0) {
+                postText += '<br><strong style="color:var(--green); font-size: 12px; margin-top: 5px; display: inline-block;"><i class="fas fa-image"></i> Image attached</strong>';
+            }
+            forumPosts.unshift({ author: 'You', time: 'Just now', text: postText });
             localStorage.setItem('sajhaForum', JSON.stringify(forumPosts));
             renderForum();
             updateCoins(5);
+            document.getElementById('chowpalModal').classList.remove('active');
+        } else {
+            alert('Please enter a question!');
         }
     });
+
+    // Profit Calculator
+    document.getElementById('openCalcBtn')?.addEventListener('click', () => {
+        document.getElementById('profitModal').classList.add('active');
+        document.getElementById('calcResult').style.display = 'none';
+        document.getElementById('calcAcres').value = '';
+    });
+
+    document.getElementById('calcProfitBtn')?.addEventListener('click', () => {
+        const acres = parseFloat(document.getElementById('calcAcres').value);
+        if (!acres || acres <= 0) return alert('Please enter valid acres');
+
+        const revPerAcre = parseInt(document.getElementById('calcCrop').value);
+        // Let's assume average costs: seed+fertilizer+rent+labor = ₹16,000 per acre
+        const totalRev = revPerAcre * acres;
+        const totalCost = 16000 * acres;
+        const profit = totalRev - totalCost;
+
+        document.getElementById('calcResult').style.display = 'block';
+        document.getElementById('calcProfitValue').textContent = '₹' + profit.toLocaleString();
+    });
+
+    // Govt Subsidy Assistant
+    document.getElementById('subsidyAssistBtn')?.addEventListener('click', () => {
+        document.getElementById('subsidyModal').classList.add('active');
+        document.getElementById('subsidyStep1').style.display = 'block';
+        document.getElementById('subsidyStep2').style.display = 'none';
+        document.getElementById('subsidyResult').style.display = 'none';
+    });
+
+    const triggerSubsidyAnalysis = () => {
+        document.getElementById('subsidyStep1').style.display = 'none';
+        document.getElementById('subsidyStep2').style.display = 'block';
+        setTimeout(() => {
+            document.getElementById('subsidyStep2').style.display = 'none';
+            document.getElementById('subsidyResult').style.display = 'block';
+        }, 2000);
+    };
+
+    document.getElementById('subsidyYes')?.addEventListener('click', triggerSubsidyAnalysis);
+    document.getElementById('subsidyNo')?.addEventListener('click', triggerSubsidyAnalysis);
 
     // Audio Guide
     document.querySelectorAll('.audio-btn').forEach(btn => {
@@ -424,9 +491,36 @@ function renderMandiRates(filterText = '') {
     }
 
     container.innerHTML = filteredRates.map(item => `
-        <div class="mandi-item"><span>${item.crop}</span> <span>${item.price}</span></div>
+        <div class="mandi-item" style="display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
+            <div>
+                <span style="display: block; font-weight: 500;">${item.crop}</span> 
+                <span style="color: var(--green); font-size: 14px; font-weight: bold;">${item.price}</span>
+            </div>
+            <button class="notification-bell" onclick="setPriceAlert('${item.crop.replace(/'/g, "\\'")}', '${item.price}')" style="background: rgba(255, 179, 0, 0.1); border: none; color: #ffb300; font-size: 18px; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; transition: 0.2s;" title="Set Price Alert"><i class="fas fa-bell"></i></button>
+        </div>
     `).join('');
 }
+
+window.setPriceAlert = function (cropName, currentPrice) {
+    if (confirm(`Alert set! We will notify you on WhatsApp when ${cropName} changes from ${currentPrice}.`)) {
+        // Simulate push notification 4 seconds later
+        setTimeout(() => {
+            const notif = document.getElementById('pushNotification');
+            const msg = document.getElementById('pushMsg');
+            if (notif && msg) {
+                msg.textContent = `🔔 PRICE SURGE! ${cropName} has spiked in your local mandi. Check now!`;
+                notif.style.top = '20px'; // Slide down in view
+
+                speakText(currentLang === 'hi' ? "मंडी भाव का अलर्ट आया है" : "You have a new Mandi price alert!");
+
+                // Auto hide
+                setTimeout(() => {
+                    notif.style.top = '-150px';
+                }, 7000);
+            }
+        }, 4000);
+    }
+};
 
 function handleVoiceCommand(cmd) {
     if (!cmd) return;
