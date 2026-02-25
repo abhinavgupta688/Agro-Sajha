@@ -139,12 +139,12 @@
                         <small>₹500/hr</small>
                     </button>
                     <button class="equip-btn" data-type="harvester" data-price="800">
-                        <i class="fas fa-tractor"></i>
+                        <i class="fas fa-truck-monster"></i>
                         <span data-i18n="harvester">Harvester</span>
                         <small>₹800/hr</small>
                     </button>
                     <button class="equip-btn" data-type="plough" data-price="300">
-                        <i class="fas fa-tractor"></i>
+                        <i class="fas fa-grip-lines"></i>
                         <span data-i18n="plough">Plough</span>
                         <small>₹300/hr</small>
                     </button>
@@ -154,7 +154,7 @@
                         <small>₹400/hr</small>
                     </button>
                     <button class="equip-btn" data-type="cultivator" data-price="350">
-                        <i class="fas fa-tractor"></i>
+                        <i class="fas fa-fan"></i>
                         <span data-i18n="cultivator">Cultivator</span>
                         <small>₹350/hr</small>
                     </button>
@@ -223,6 +223,7 @@
                 <button class="big-btn primary full" id="bookBtn" data-i18n="bookBtn">Book Now</button>
             </div>
         </div>
+        </div>
     </section>
 
     <!-- About - Simple 3 points -->
@@ -284,10 +285,12 @@
                 <div
                     style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
                     <h2 data-i18n="mandiRates" style="margin-bottom: 0;">Mandi Rates</h2>
-                    <div class="search-box" style="position: relative; display: flex; align-items: center;">
+                    <div class="search-box"
+                        style="position: relative; display: flex; align-items: center; flex: 1; max-width: 250px;">
                         <i class="fas fa-search" style="position: absolute; left: 10px; color: #888;"></i>
-                        <input type="text" id="mandiSearch" placeholder="Search crops..."
-                            style="padding: 8px 12px 8px 32px; border: 1px solid var(--border); border-radius: 20px; outline: none; width: 200px;">
+                        <input type="text" id="mandiSearch" data-i18n-placeholder="searchCrops"
+                            placeholder="Search crops..."
+                            style="padding: 8px 12px 8px 32px; border: 1px solid var(--border); border-radius: 20px; outline: none; width: 100%;">
                     </div>
                 </div>
                 <div class="mandi-list" id="mandiListContainer">
