@@ -245,11 +245,38 @@ function setupEvents() {
     // Voice Command
     document.getElementById('voiceBtn')?.addEventListener('click', () => {
         const voiceBtn = document.getElementById('voiceBtn');
-        voiceBtn.classList.add('listening');
-        setTimeout(() => {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+        if (!SpeechRecognition) {
+            alert(currentLang === 'hi' ? "आपका ब्राउज़र वॉइस सपोर्ट नहीं करता।" : "Your browser does not support voice recognition. Please use Google Chrome.");
+            return;
+        }
+
+        const recognition = new SpeechRecognition();
+        recognition.lang = currentLang === 'hi' ? 'hi-IN' : 'en-IN';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        recognition.onstart = function () {
+            voiceBtn.classList.add('listening');
+        };
+
+        recognition.onspeechend = function () {
+            recognition.stop();
+        };
+
+        recognition.onresult = function (event) {
             voiceBtn.classList.remove('listening');
-            handleVoiceCommand();
-        }, 2500);
+            const transcript = event.results[0][0].transcript.toLowerCase();
+            handleVoiceCommand(transcript);
+        };
+
+        recognition.onerror = function (event) {
+            voiceBtn.classList.remove('listening');
+            console.error("Voice Error: ", event.error);
+        };
+
+        recognition.start();
     });
 
     // --- Newest Features Handlers ---
@@ -401,17 +428,30 @@ function renderMandiRates(filterText = '') {
     `).join('');
 }
 
-function handleVoiceCommand() {
-    const commands = ["tractor", "mandi", "weather"];
-    const cmd = commands[Math.floor(Math.random() * commands.length)];
+function handleVoiceCommand(cmd) {
+    if (!cmd) return;
 
-    if (cmd === "tractor") {
+    // Check keywords
+    if (cmd.includes('tractor') || cmd.includes('ट्रैक्टर')) {
         document.querySelector('.equip-btn[data-type="tractor"]')?.click();
         document.getElementById('booking-section').scrollIntoView({ behavior: 'smooth' });
-        alert("Action: Selecting Tractor for you.");
-    } else if (cmd === "mandi") {
-        document.getElementById('advisory').scrollIntoView({ behavior: 'smooth' });
-        alert("Action: Opening Mandi Rates.");
+        speakText(currentLang === 'hi' ? "मैंने आपके लिए ट्रैक्टर चुन लिया है।" : "I have selected a Tractor for you.");
+    } else if (cmd.includes('harvester') || cmd.includes('हार्वेस्टर')) {
+        document.querySelector('.equip-btn[data-type="harvester"]')?.click();
+        document.getElementById('booking-section').scrollIntoView({ behavior: 'smooth' });
+        speakText(currentLang === 'hi' ? "मैंने आपके लिए हार्वेस्टर चुन लिया है।" : "I have selected a Harvester for you.");
+    } else if (cmd.includes('mandi') || cmd.includes('मंडी') || cmd.includes('price') || cmd.includes('भाव') || cmd.includes('rate')) {
+        document.querySelector('.mandi-section')?.scrollIntoView({ behavior: 'smooth' });
+        speakText(currentLang === 'hi' ? "यहाँ मंडी भाव हैं।" : "Here are the Mandi rates.");
+    } else if (cmd.includes('irrigation') || cmd.includes('सिंचाई') || cmd.includes('pump') || cmd.includes('पंप') || cmd.includes('water')) {
+        document.querySelector('.equip-btn[data-type="irrigation"]')?.click();
+        document.getElementById('booking-section').scrollIntoView({ behavior: 'smooth' });
+        speakText(currentLang === 'hi' ? "मैंने सिंचाई चुन लिया है।" : "I have selected Irrigation.");
+    } else if (cmd.includes('home') || cmd.includes('घर')) {
+        document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
+        speakText(currentLang === 'hi' ? "होम पेज खोल रहा हूँ।" : "Opening Home.");
+    } else {
+        speakText(currentLang === 'hi' ? "मुझे समझ नहीं आया। ट्रैक्टर, हार्वेस्टर या मंडी बोलें।" : "I didn't catch that. Say Tractor, Harvester, or Mandi rates.");
     }
 }
 
