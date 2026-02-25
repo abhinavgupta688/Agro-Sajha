@@ -165,16 +165,19 @@
 
 <body>
     <nav class="top-bar">
-        <a href="index.html" class="logo"><i class="fas fa-seedling"></i> SAJHA</a>
+        <a href="index.html#home" class="logo"><i class="fas fa-seedling"></i> SAJHA</a>
         <ul class="top-menu">
             <li><a href="index.html#home" data-i18n="home">Home</a></li>
-            <li><a href="owner.html" data-i18n="forOwners">For Owners</a></li>
-            <li><a href="driver.html" data-i18n="forDrivers">For Drivers</a></li>
-            <li><a href="club.html" class="active" data-i18n="forClubs">Farmers Club</a></li>
+            <li><a href="index.html#booking-section" data-i18n="book">Book</a></li>
+            <li><a href="owner.html" class="owner-link"><i class="fas fa-user-tie"></i> <span data-i18n="forOwners">For
+                        Owners</span></a></li>
+            <li><a href="driver.html" class="driver-link"><i class="fas fa-id-card"></i> <span
+                        data-i18n="forDrivers">For Drivers</span></a></li>
+            <li><a href="club.html" class="club-link active"><i class="fas fa-users"></i> <span
+                        data-i18n="forClubs">Farmers Club</span></a></li>
         </ul>
         <div class="top-actions">
-            <select class="lang-select" id="langSelect">
-                <!-- Dropdown will be populated by langSelect.js or similar -->
+            <select class="lang-select" id="langSelect" title="Change Language">
                 <option value="en">English</option>
                 <option value="hi">हिंदी (Hindi)</option>
                 <option value="bn">বাংলা (Bengali)</option>
@@ -186,6 +189,9 @@
                 <option value="ml">മലയാളം (Malayalam)</option>
                 <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
             </select>
+            <button class="menu-btn" id="menuBtn" aria-label="Menu"
+                onclick="document.querySelector('.top-menu').classList.toggle('open')"><i
+                    class="fas fa-bars"></i></button>
         </div>
     </nav>
 
