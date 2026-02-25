@@ -462,15 +462,70 @@ input,
 }
 
 .equipment-btns {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    display: flex;
+    overflow-x: auto;
     gap: 10px;
+    padding-bottom: 15px;
+    /* space for scrollbar */
+    scroll-snap-type: x mandatory;
+}
+
+.equipment-btns::-webkit-scrollbar {
+    height: 8px;
+}
+
+.equipment-btns::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.equipment-btns::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+
+.equipment-btns::-webkit-scrollbar-thumb:hover {
+    background: var(--green);
+}
+
+.equip-btn {
+    min-width: 100px;
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    /* other properties remain via inline or inherited */
 }
 
 @media (max-width: 640px) {
     .equipment-btns {
-        grid-template-columns: repeat(2, 1fr);
+        /* overridden by flexbox layout now */
     }
+}
+
+#mandiListContainer {
+    max-height: 250px;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px;
+    background: #fafafa;
+}
+
+#mandiListContainer::-webkit-scrollbar {
+    width: 6px;
+}
+
+#mandiListContainer::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+#mandiListContainer::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+
+#mandiListContainer::-webkit-scrollbar-thumb:hover {
+    background: var(--green);
 }
 
 .duration-btns {
