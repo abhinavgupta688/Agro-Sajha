@@ -412,7 +412,21 @@ function checkCheaperDeals(type, basePrice) {
     if (!compSection) return;
     try {
         const saved = localStorage.getItem('sajhaOwnerEquipment');
-        const ownerEquip = saved ? JSON.parse(saved) : [];
+        let ownerEquip = saved ? JSON.parse(saved) : [];
+
+        // Populate default demo data if no owner equipment exists
+        if (ownerEquip.length === 0) {
+            ownerEquip = [
+                { name: 'Ramesh Patel', type: 'tractor', price: '400', timing: '06:00 - 18:00' },
+                { name: 'Suresh Kumar', type: 'harvester', price: '1000', timing: '08:00 - 17:00' },
+                { name: 'Amit Singh', type: 'cultivator', price: '300', timing: '05:00 - 19:00' },
+                { name: 'Vijay Farm', type: 'sprayer', price: '200', timing: '07:00 - 20:00' },
+                { name: 'Balvinder Seeders', type: 'seedDrill', price: '350', timing: '06:00 - 18:00' }
+            ];
+            // Save to local storage so it persists and shows up in owner portal too
+            localStorage.setItem('sajhaOwnerEquipment', JSON.stringify(ownerEquip));
+        }
+
         const deals = ownerEquip.filter(item => item.type === type && parseInt(item.price) < basePrice);
 
         if (deals.length > 0) {
