@@ -21,6 +21,19 @@ const equipmentData = [
     { lat: 17.3850, lng: 78.4867, type: 'sprayer', name: 'Crop Care', price: 250 },
 ];
 
+const mandiRatesData = [
+    { crop: 'Wheat (Gehu)', price: '₹2,275/qtl' },
+    { crop: 'Rice (Dhan)', price: '₹2,183/qtl' },
+    { crop: 'Mustard (Sarson)', price: '₹5,650/qtl' },
+    { crop: 'Cotton (Kapas)', price: '₹6,620/qtl' },
+    { crop: 'Sugarcane (Ganna)', price: '₹315/qtl' },
+    { crop: 'Soybean', price: '₹4,600/qtl' },
+    { crop: 'Potato (Aloo)', price: '₹1,200/qtl' },
+    { crop: 'Onion (Pyaz)', price: '₹2,100/qtl' },
+    { crop: 'Tomato (Tamatar)', price: '₹1,500/qtl' },
+    { crop: 'Maize (Makka)', price: '₹2,090/qtl' },
+];
+
 document.addEventListener('DOMContentLoaded', () => {
     initMap();
     setMinDate();
@@ -32,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderForum();
     updateUI();
     updatePrice(); // Show correct initial price on load
+    renderMandiRates();
 });
 
 function loadData() {
@@ -247,6 +261,11 @@ function setupEvents() {
         document.getElementById('startScanBtn').style.display = 'block';
     });
 
+    // Mandi search filter
+    document.getElementById('mandiSearch')?.addEventListener('input', (e) => {
+        renderMandiRates(e.target.value);
+    });
+
     document.getElementById('startScanBtn')?.addEventListener('click', () => {
         const btn = document.getElementById('startScanBtn');
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing leaf...';
@@ -360,6 +379,25 @@ function renderMarketplace() {
             </div>
             <div style="color: var(--green); font-weight: 700;">${b.price}</div>
         </div>
+    `).join('');
+}
+
+function renderMandiRates(filterText = '') {
+    const container = document.getElementById('mandiListContainer');
+    if (!container) return;
+
+    const lowerFilter = filterText.toLowerCase();
+    const filteredRates = mandiRatesData.filter(item =>
+        item.crop.toLowerCase().includes(lowerFilter)
+    );
+
+    if (filteredRates.length === 0) {
+        container.innerHTML = '<div style="padding: 16px; text-align: center; color: #888;">No crops found.</div>';
+        return;
+    }
+
+    container.innerHTML = filteredRates.map(item => `
+        <div class="mandi-item"><span>${item.crop}</span> <span>${item.price}</span></div>
     `).join('');
 }
 

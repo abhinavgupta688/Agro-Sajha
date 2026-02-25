@@ -281,11 +281,17 @@
             </div>
 
             <div class="mandi-section" style="margin-top: 40px;">
-                <h2 data-i18n="mandiRates">Mandi Rates</h2>
-                <div class="mandi-list">
-                    <div class="mandi-item"><span>Wheat (Gehu)</span> <span>₹2,275/qtl</span></div>
-                    <div class="mandi-item"><span>Rice (Dhan)</span> <span>₹2,183/qtl</span></div>
-                    <div class="mandi-item"><span>Mustard (Sarson)</span> <span>₹5,650/qtl</span></div>
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+                    <h2 data-i18n="mandiRates" style="margin-bottom: 0;">Mandi Rates</h2>
+                    <div class="search-box" style="position: relative; display: flex; align-items: center;">
+                        <i class="fas fa-search" style="position: absolute; left: 10px; color: #888;"></i>
+                        <input type="text" id="mandiSearch" placeholder="Search crops..."
+                            style="padding: 8px 12px 8px 32px; border: 1px solid var(--border); border-radius: 20px; outline: none; width: 200px;">
+                    </div>
+                </div>
+                <div class="mandi-list" id="mandiListContainer">
+                    <!-- Loaded dynamically via JS -->
                 </div>
             </div>
 
