@@ -431,27 +431,75 @@ function renderMandiRates(filterText = '') {
 function handleVoiceCommand(cmd) {
     if (!cmd) return;
 
-    // Check keywords
+    // Check keywords for equipment
     if (cmd.includes('tractor') || cmd.includes('ट्रैक्टर')) {
         document.querySelector('.equip-btn[data-type="tractor"]')?.click();
-        document.getElementById('booking-section').scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('booking-section')?.scrollIntoView({ behavior: 'smooth' });
         speakText(currentLang === 'hi' ? "मैंने आपके लिए ट्रैक्टर चुन लिया है।" : "I have selected a Tractor for you.");
     } else if (cmd.includes('harvester') || cmd.includes('हार्वेस्टर')) {
         document.querySelector('.equip-btn[data-type="harvester"]')?.click();
-        document.getElementById('booking-section').scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('booking-section')?.scrollIntoView({ behavior: 'smooth' });
         speakText(currentLang === 'hi' ? "मैंने आपके लिए हार्वेस्टर चुन लिया है।" : "I have selected a Harvester for you.");
-    } else if (cmd.includes('mandi') || cmd.includes('मंडी') || cmd.includes('price') || cmd.includes('भाव') || cmd.includes('rate')) {
-        document.querySelector('.mandi-section')?.scrollIntoView({ behavior: 'smooth' });
-        speakText(currentLang === 'hi' ? "यहाँ मंडी भाव हैं।" : "Here are the Mandi rates.");
     } else if (cmd.includes('irrigation') || cmd.includes('सिंचाई') || cmd.includes('pump') || cmd.includes('पंप') || cmd.includes('water')) {
         document.querySelector('.equip-btn[data-type="irrigation"]')?.click();
-        document.getElementById('booking-section').scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('booking-section')?.scrollIntoView({ behavior: 'smooth' });
         speakText(currentLang === 'hi' ? "मैंने सिंचाई चुन लिया है।" : "I have selected Irrigation.");
+    }
+    // Navigation / Sections
+    else if (cmd.includes('mandi') || cmd.includes('मंडी') || cmd.includes('price') || cmd.includes('भाव') || cmd.includes('rate')) {
+        document.querySelector('.mandi-section')?.scrollIntoView({ behavior: 'smooth' });
+        speakText(currentLang === 'hi' ? "यहाँ मंडी भाव हैं।" : "Here are the Mandi rates.");
     } else if (cmd.includes('home') || cmd.includes('घर')) {
-        document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
+        if (window.location.pathname.includes('index.html') || window.location.pathname.endsWith('/')) {
+            document.getElementById('home')?.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            window.location.href = 'index.html';
+        }
         speakText(currentLang === 'hi' ? "होम पेज खोल रहा हूँ।" : "Opening Home.");
+    } else if (cmd.includes('owner') || cmd.includes('मालिक') || cmd.includes('rent')) {
+        window.location.href = 'owner.html';
+        speakText(currentLang === 'hi' ? "मालिक पोर्टल खोल रहा हूँ।" : "Opening Owner Portal.");
+    } else if (cmd.includes('driver') || cmd.includes('ड्राइवर') || cmd.includes('job')) {
+        window.location.href = 'driver.html';
+        speakText(currentLang === 'hi' ? "ड्राइवर पोर्टल खोल रहा हूँ।" : "Opening Driver Portal.");
+    } else if (cmd.includes('club') || cmd.includes('क्लब') || cmd.includes('community')) {
+        window.location.href = 'club.html';
+        speakText(currentLang === 'hi' ? "किसान क्लब खोल रहा हूँ।" : "Opening Farmers Club.");
+    } else if (cmd.includes('scheme') || cmd.includes('yojana') || cmd.includes('योजना') || cmd.includes('subsidy')) {
+        document.querySelector('.schemes-section')?.scrollIntoView({ behavior: 'smooth' });
+        speakText(currentLang === 'hi' ? "यहाँ सरकारी योजनाएं हैं।" : "Here are Government Schemes.");
+    } else if (cmd.includes('contact') || cmd.includes('call') || cmd.includes('फोन') || cmd.includes('संपर्क')) {
+        document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+        speakText(currentLang === 'hi' ? "यहाँ संपर्क जानकारी है।" : "Here is our contact information.");
+    } else if (cmd.includes('post') || cmd.includes('chowpal') || cmd.includes('चौपाल')) {
+        document.getElementById('chowpal')?.scrollIntoView({ behavior: 'smooth' });
+        speakText(currentLang === 'hi' ? "किसान चौपाल खोल रहा हूँ।" : "Opening Kisan Chowpal.");
+    }
+    // Modals & Popups
+    else if (cmd.includes('booking') || cmd.includes('history') || cmd.includes('बुकिंग')) {
+        document.getElementById('bookingsPanel')?.classList.add('active');
+        speakText(currentLang === 'hi' ? "आपकी बुकिंग्स यहाँ हैं।" : "Opening your bookings.");
+    } else if (cmd.includes('scan') || cmd.includes('disease') || cmd.includes('बीमारी') || cmd.includes('crop')) {
+        document.getElementById('scanCropBtn')?.click();
+        speakText(currentLang === 'hi' ? "फसल स्कैनिंग खोल रहा हूँ।" : "Opening crop scanner.");
+    }
+    // Languages
+    else if (cmd.includes('hindi') || cmd.includes('हिंदी')) {
+        const langSelect = document.getElementById('langSelect');
+        if (langSelect) {
+            langSelect.value = 'hi';
+            langSelect.dispatchEvent(new Event('change'));
+            speakText("मैंने भाषा हिंदी कर दी है।");
+        }
+    } else if (cmd.includes('english') || cmd.includes('अंग्रेजी')) {
+        const langSelect = document.getElementById('langSelect');
+        if (langSelect) {
+            langSelect.value = 'en';
+            langSelect.dispatchEvent(new Event('change'));
+            speakText("I have changed the language to English.");
+        }
     } else {
-        speakText(currentLang === 'hi' ? "मुझे समझ नहीं आया। ट्रैक्टर, हार्वेस्टर या मंडी बोलें।" : "I didn't catch that. Say Tractor, Harvester, or Mandi rates.");
+        speakText(currentLang === 'hi' ? "मुझे समझ नहीं आया। 'ट्रैक्टर', 'योजना', या 'मालिक पोर्टल' बोलें।" : "I didn't catch that. Say Tractor, Mandi, Schemes, or Owner Portal.");
     }
 }
 
