@@ -3,6 +3,14 @@ let myEquipment = [];
 let currentLang = localStorage.getItem('sajhaLang') || 'en';
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Auth Check
+    const userRole = localStorage.getItem('sajhaUser');
+    if (!userRole || userRole !== 'owner') {
+        alert("Please login as a Machine Owner to access this portal.");
+        location.href = 'login.html';
+        return;
+    }
+    
     loadMyEquipment();
     setupEvents();
     applyLang();

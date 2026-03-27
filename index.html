@@ -9,9 +9,60 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2e7d32">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2329/2329094.png">
 </head>
 
 <body>
+    <!-- PWA Install Banner -->
+    <div id="pwaInstallBanner">
+        <div class="pwa-icon">🌾</div>
+        <div class="pwa-text">
+            <strong>Install SAJHA App</strong>
+            <small>Works offline. Add to home screen.</small>
+        </div>
+        <div class="pwa-actions">
+            <button id="pwaInstallBtn">Install</button>
+            <button id="pwaDismissBtn">✕</button>
+        </div>
+    </div>
+
+    <!-- Theme Toggle & Global Toast -->
+    <div id="toastContainer"
+        style="position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 10000; display: flex; flex-direction: column; gap: 10px;">
+    </div>
+
+    <!-- AI Scan Scanning Overlay -->
+    <div id="scanOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 20000; flex-direction: column; align-items: center; justify-content: center; color: white;">
+        <div class="scan-line" style="position: absolute; width: 100%; height: 2px; background: var(--green); top: 0; box-shadow: 0 0 15px var(--green); animation: scanLine 2.5s infinite linear;"></div>
+        <i class="fas fa-camera fa-beat" style="font-size: 60px; margin-bottom: 20px;"></i>
+        <h2 style="margin-bottom: 10px;" data-i18n="analyzing">AI is Analyzing...</h2>
+        <div style="width: 200px; height: 6px; background: rgba(255,255,255,0.2); border-radius: 10px; overflow: hidden;">
+            <div id="scanProgress" style="width: 0%; height: 100%; background: var(--green); transition: width 0.1s linear;"></div>
+        </div>
+        <p id="scanStepText" style="margin-top: 15px; font-size: 14px; opacity: 0.8;">Processing image...</p>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span data-i18n="home">Home</span>
+        </a>
+        <a href="index.html#booking-section" class="nav-item">
+            <i class="fas fa-tractor"></i>
+            <span data-i18n="book">Book</span>
+        </a>
+        <a href="owner.html" class="nav-item">
+            <i class="fas fa-briefcase"></i>
+            <span data-i18n="forOwners">Owner</span>
+        </a>
+        <a href="club.html" class="nav-item">
+            <i class="fas fa-users"></i>
+            <span data-i18n="club">Club</span>
+        </a>
+    </nav>
     <!-- Price Push Notification -->
     <div id="pushNotification"
         style="position: fixed; top: -150px; right: 20px; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 16px; border-radius: 12px; z-index: 9999; display: flex; align-items: center; gap: 12px; transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border-left: 4px solid var(--green); max-width: 300px;">
@@ -36,6 +87,10 @@
             <li><a href="#" id="menuBookingsTop" data-i18n="bookings">My Bookings</a></li>
         </ul>
         <div class="top-actions">
+            <button class="login-btn" id="loginNavBtn" onclick="location.href='login.html'"><i class="fas fa-user-circle"></i> Login</button>
+            <div style="display: flex; align-items: center; gap: 5px; margin-right: 15px; color: var(--green); font-size: 13px; font-weight: 600;" id="safetyBadge" data-i18n="safetyFirst">
+                <i class="fas fa-shield-halved"></i> 100% Secure
+            </div>
             <select class="lang-select" id="langSelect" title="Change Language">
                 <option value="en">English</option>
                 <option value="hi">हिंदी (Hindi)</option>
@@ -100,6 +155,10 @@
             <button class="simple-card" id="irrigateBtn" style="padding: 15px; border-radius: 12px; height: auto;">
                 <i class="fas fa-tint" style="font-size: 24px; color: #0288d1; margin-bottom: 8px;"></i>
                 <div data-i18n="smartIrrigation" style="font-weight: 600; font-size: 14px;">Irrigation</div>
+            </button>
+            <button class="simple-card" id="soilBtn" style="padding: 15px; border-radius: 12px; height: auto;">
+                <i class="fas fa-leaf" style="font-size: 24px; color: #7cb342; margin-bottom: 8px;"></i>
+                <div data-i18n="soilHealth" style="font-weight: 600; font-size: 14px;">Soil Health</div>
             </button>
             <button class="simple-card" id="referBtn" style="padding: 15px; border-radius: 12px; height: auto;">
                 <i class="fas fa-user-plus" style="font-size: 24px; color: #7b1fa2; margin-bottom: 8px;"></i>
@@ -326,7 +385,7 @@
                     on your land.</p>
                 <button class="big-btn primary" id="subsidyAssistBtn"
                     style="margin-bottom: 24px; padding: 12px 20px; background: #1565c0; width: 100%; border-radius: 8px; font-weight: bold;"><i
-                        class="fas fa-magic"></i> Find My Subsidy (AI Assistant)</button>
+                        class="fas fa-magic"></i> <span data-i18n="findSubsidy">Find My Subsidy (AI Assistant)</span></button>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
                     <div class="scheme-card"
                         style="margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between;">
@@ -456,12 +515,48 @@
     <section id="chowpal" class="simple-section" style="background: var(--white);">
         <div class="container">
             <h2 data-i18n="kisanChowpal">Farmers Community</h2>
+            
+            <div class="community-tabs" style="display: flex; gap: 10px; margin-top: 15px;">
+                <button class="tab-btn active" onclick="switchCommunityTab('posts')" style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--green); color: white; cursor: pointer;">Chowpal Posts</button>
+                <button class="tab-btn" onclick="switchCommunityTab('exchange')" style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: #f5f5f5; color: var(--text); cursor: pointer;">Seed/Tool Exchange</button>
+            </div>
+
             <div id="chowpalPosts" class="forum-posts" style="margin-top: 24px;">
                 <!-- Posts will be injected here -->
             </div>
+
+            <div id="exchangeItems" class="exchange-items" style="margin-top: 24px; display: none;">
+                <p style="font-size: 14px; color: #666; margin-bottom: 15px;">Shared by farmers near you:</p>
+                <div id="exchangeList">
+                     <!-- Exchange items injected here -->
+                </div>
+                <button class="big-btn secondary full" id="listExchangeBtn" style="margin-top: 15px; border: 2px dashed var(--green); color: var(--green);"><i class="fas fa-plus"></i> List Item to Share</button>
+            </div>
+
             <button class="big-btn primary full" id="chowpalAskBtn"
                 style="background: var(--green); color: white; margin-top: 20px;"><i class="fas fa-camera"></i> Ask
                 Question with Photo</button>
+
+            <!-- Expert E-Chaupal (Live) -->
+            <div
+                style="margin-top: 40px; background: linear-gradient(135deg, #1b5e20, #2e7d32); color: white; padding: 24px; border-radius: 16px; position: relative; overflow: hidden;">
+                <div
+                    style="position: absolute; top: 10px; right: 10px; background: #d32f2f; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; animation: pulse 2s infinite;">
+                    LIVE NOW</div>
+                <h3 style="margin-bottom: 8px;"><i class="fas fa-video"></i> Expert E-Chaupal</h3>
+                <p style="font-size: 14px; margin-bottom: 16px; opacity: 0.9;">Join Dr. Sharma to discuss Wheat Yellow
+                    Rust prevention strategies for this season.</p>
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                    <img src="https://i.pravatar.cc/100?u=expert"
+                        style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid white;">
+                    <div>
+                        <div style="font-weight: bold;">Dr. Ramesh Sharma</div>
+                        <div style="font-size: 12px; opacity: 0.8;">Agri-Scientist, KVK</div>
+                    </div>
+                </div>
+                <button class="big-btn primary full" id="joinLiveBtn"
+                    style="background: white; color: var(--green); font-weight: bold;" data-i18n="joinVideoCall">Join Video Call</button>
+            </div>
         </div>
     </section>
 
@@ -556,15 +651,22 @@
                 <button class="close-btn" data-close="scanModal"><i class="fas fa-times"></i></button>
             </div>
             <div class="panel-body" style="text-align: center;">
-                <div
-                    style="width: 100%; height: 200px; background: #f0f0f0; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; border: 2px dashed #ccc;">
-                    <i class="fas fa-camera" style="font-size: 48px; color: #999;"></i>
-                </div>
+                <label for="cropFile" style="cursor: pointer; width: 100%; display: block;">
+                    <div id="scanPlaceholder"
+                        style="width: 100%; height: 200px; background: #f0f0f0; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 20px; border: 2px dashed #ccc; transition: 0.3s;">
+                        <i class="fas fa-camera" style="font-size: 48px; color: #999; margin-bottom: 10px;"></i>
+                        <span style="color: #666; font-weight: 500;">Tap to Upload or Take Photo</span>
+                    </div>
+                    <img id="cropPreview" src="#" alt="Crop Preview" 
+                        style="display: none; width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border);">
+                </label>
+                <input type="file" id="cropFile" accept="image/*" style="display: none;">
+                
                 <p id="scanResultText"
-                    style="display: none; background: #fff3e0; padding: 15px; border-radius: 10px; color: #e65100; font-weight: 500;"
+                    style="display: none; background: #fff3e0; padding: 15px; border-radius: 10px; color: #e65100; font-weight: 500; text-align: left; margin-bottom: 15px;"
                     data-i18n="scanResult">Diagnosis: Leaf Rust...</p>
                 <button class="big-btn primary full" id="startScanBtn"
-                    style="background: var(--green); color: white;">Analyze Leaf</button>
+                    style="background: var(--green); color: white;" data-i18n="analyzeLeaf">Analyze Leaf</button>
             </div>
         </div>
     </div>
@@ -711,6 +813,39 @@
                             style="display: block; text-align: center; text-decoration: none; background: var(--green);">Apply
                             on Portal <i class="fas fa-arrow-right"></i></a>
                     </div>
+
+                    <!-- E-Chaupal Video Modal -->
+                    <div class="overlay modal" id="videoModal">
+                        <div class="panel" style="max-width: 600px;">
+                            <div class="panel-head">
+                                <h2><i class="fas fa-video"></i> Live: Expert Consultation</h2>
+                                <button class="close-btn" data-close="videoModal"><i class="fas fa-times"></i></button>
+                            </div>
+                            <div class="panel-body" style="padding: 0;">
+                                <div
+                                    style="width: 100%; aspect-ratio: 16/9; background: #000; position: relative; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-user-tie" style="font-size: 80px; color: #333;"></i>
+                                    <div
+                                        style="position: absolute; bottom: 20px; left: 20px; background: rgba(0,0,0,0.6); padding: 8px 12px; border-radius: 8px; color: white;">
+                                        <span style="font-size: 12px; opacity: 0.8;">Speaker:</span><br><strong>Dr.
+                                            Ramesh Sharma</strong>
+                                    </div>
+                                </div>
+                                <div
+                                    style="padding: 20px; background: #f9f9f9; display: flex; justify-content: space-around;">
+                                    <button class="voice-btn"
+                                        style="position: static; box-shadow: none; background: #f44336; color: white;"><i
+                                            class="fas fa-microphone-slash"></i></button>
+                                    <button class="voice-btn"
+                                        style="position: static; box-shadow: none; background: #4caf50; color: white;"><i
+                                            class="fas fa-hand-paper"></i></button>
+                                    <button class="voice-btn"
+                                        style="position: static; box-shadow: none; background: #555; color: white;"
+                                        data-close="videoModal"><i class="fas fa-phone-slash"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -739,9 +874,54 @@
         </div>
     </div>
 
+    <!-- Soil Health Modal -->
+    <div class="overlay modal" id="soilModal">
+        <div class="panel">
+            <div class="panel-head">
+                <h2 data-i18n="soilHealth">Soil Health</h2>
+                <button class="close-btn" data-close="soilModal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="panel-body">
+                <p style="font-size: 14px; margin-bottom: 15px;">Enter your soil test values (optional) for expert
+                    recommendations.</p>
+                <div class="input-row" style="flex-direction: column; align-items: stretch; gap: 5px;">
+                    <label style="font-size: 13px;">Nitrogen (N)</label>
+                    <input type="number" id="soilN" placeholder="mg/kg">
+                </div>
+                <div class="input-row" style="flex-direction: column; align-items: stretch; gap: 5px;">
+                    <label style="font-size: 13px;">Phosphorus (P)</label>
+                    <input type="number" id="soilP" placeholder="mg/kg">
+                </div>
+                <div class="input-row" style="flex-direction: column; align-items: stretch; gap: 5px;">
+                    <label style="font-size: 13px;">Potassium (K)</label>
+                    <input type="number" id="soilK" placeholder="mg/kg">
+                </div>
+                <button class="big-btn primary full" id="analyzeSoilBtn"
+                    style="background: #7cb342; color: white; margin-top: 15px;" data-i18n="getSoilAdvice">Get Soil Advice</button>
+                <div id="soilResult"
+                    style="display:none; margin-top: 15px; padding: 15px; background: #f1f8e9; border-radius: 10px; border: 1px solid #7cb342;">
+                    <h4 style="color: #33691e; margin-bottom: 5px;"><i class="fas fa-check-circle"></i> Result:</h4>
+                    <p id="soilAdviceText" style="font-size: 14px; color: #33691e;"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="lang.js"></script>
     <script src="script.js"></script>
+    <script>
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').then(reg => {
+                    console.log('SW Registered!', reg);
+                }).catch(err => {
+                    console.log('SW Fail', err);
+                });
+            });
+        }
+    </script>
 </body>
 
 </html>

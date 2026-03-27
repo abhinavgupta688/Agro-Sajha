@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SAJHA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="auth-wrapper">
+
+    <div class="auth-card">
+        <div class="auth-header">
+            <i class="fas fa-seedling" style="font-size: 50px; color: #2e7d32; margin-bottom: 20px;"></i>
+            <h1 id="authTitle" style="font-size: 24px; font-weight: 800; color: #333; margin-bottom: 8px;">Welcome to SAJHA</h1>
+            <p id="authSub" style="color: #666; font-size: 15px;">Select your role to continue</p>
+        </div>
+
+        <div class="auth-tabs">
+            <div class="auth-tab active" id="tabFarmer" onclick="switchTab('farmer')">Farmer</div>
+            <div class="auth-tab" id="tabOwner" onclick="switchTab('owner')">Machine Owner</div>
+        </div>
+
+        <form id="loginForm">
+            <div class="input-box">
+                <label id="phoneLabel">Mobile Number</label>
+                <input type="tel" placeholder="Enter 10 digit number" required>
+            </div>
+            
+            <div class="input-box">
+                <label id="pwdLabel">Password / OTP</label>
+                <input type="password" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="big-btn primary full" style="margin-top: 10px; padding: 14px;">Login</button>
+        </form>
+
+        <p style="text-align: center; margin-top: 24px; font-size: 14px; color: #666;">
+            Don't have an account? <a href="#" style="color: #2e7d32; font-weight: 700; text-decoration: none;">Register Now</a>
+        </p>
+        
+        <div style="text-align: center; margin-top: 32px;">
+            <a href="index.html" style="font-size: 14px; color: #999; text-decoration: none; font-weight: 500;">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+    </div>
+
+    <script>
+        let currentRole = 'farmer';
+
+        function switchTab(role) {
+            currentRole = role;
+            document.getElementById('tabFarmer').classList.toggle('active', role === 'farmer');
+            document.getElementById('tabOwner').classList.toggle('active', role === 'owner');
+            
+            const title = document.getElementById('authTitle');
+            const sub = document.getElementById('authSub');
+            
+            if(role === 'farmer') {
+                title.textContent = "Farmer Login";
+                sub.textContent = "Book machines for your farm";
+            } else {
+                title.textContent = "Owner Login";
+                sub.textContent = "Manage your machines & earnings";
+            }
+        }
+
+        document.getElementById('loginForm').onsubmit = (e) => {
+            e.preventDefault();
+            // Mock Login Success
+            localStorage.setItem('sajhaUser', currentRole);
+            if(currentRole === 'farmer') {
+                location.href = 'index.html';
+            } else {
+                location.href = 'owner.html';
+            }
+        };
+
+        // Handle translations if needed
+        const lang = localStorage.getItem('sajhaLang') || 'en';
+        if(lang === 'hi') {
+            document.getElementById('tabFarmer').textContent = "किसान";
+            document.getElementById('tabOwner').textContent = "मशीन मालिक";
+            document.getElementById('phoneLabel').textContent = "मोबाइल नंबर";
+            document.getElementById('pwdLabel').textContent = "पासवर्ड / ओटीपी";
+            document.getElementById('authSub').textContent = "जारी रखने के लिए अपनी भूमिका चुनें";
+        }
+    </script>
+</body>
+</html>

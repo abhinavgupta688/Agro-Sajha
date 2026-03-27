@@ -6,13 +6,50 @@ let clubs = [
 ];
 let currentLang = localStorage.getItem('sajhaLang') || 'en';
 
+let toolBankData = [
+    { name: 'Seed Drill (Manual)', owner: 'Ram Singh', type: 'Tool', status: 'Available' },
+    { name: 'Mustard Seeds (High Yield)', owner: 'Suresh Yadav', type: 'Seed', status: '5kg Left' },
+    { name: 'Sickle & Spade Set', owner: 'Amit Patel', type: 'Tool', status: 'In Use' }
+];
+
 document.addEventListener('DOMContentLoaded', () => {
     loadClubs();
+    renderToolBank();
     setupEvents();
     applyLang();
 });
 
+function renderToolBank() {
+    const list = document.getElementById('toolBankList');
+    if (!list) return;
+
+    list.innerHTML = toolBankData.map(item => `
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #fafafa; border: 1px solid #eee; border-radius: 8px;">
+            <div>
+                <strong style="font-size: 14px; color: #333;">${item.name}</strong>
+                <div style="font-size: 11px; color: #888;">Owner: ${item.owner} | ${item.type}</div>
+            </div>
+            <span style="font-size: 11px; font-weight: 700; color: ${item.status === 'Available' ? '#2e7d32' : '#e65100'};">${item.status}</span>
+        </div>
+    `).join('');
+}
+
 function setupEvents() {
+    // List Tool Button
+    document.getElementById('listToolBtn')?.addEventListener('click', () => {
+        const name = prompt("Enter Tool or Seed Name:");
+        if (name) {
+            toolBankData.unshift({
+                name: name,
+                owner: 'You',
+                type: 'Shared',
+                status: 'Available'
+            });
+            renderToolBank();
+            alert("Listed successfully! Your neighbor will contact you if they need it.");
+        }
+    });
+
     // Language Selection
     const langSelect = document.getElementById('langSelect');
     if (langSelect) {
