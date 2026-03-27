@@ -227,6 +227,34 @@ function initMap() {
         }
     });
 
+    // Automatically pin typed addresses on the map using Nominatim Geocoding
+    const locInput = document.getElementById('locationInput');
+    if (locInput) {
+        locInput.addEventListener('change', async (e) => {
+            const query = e.target.value.trim();
+            if (!query || query.startsWith('Farm at') || query.startsWith('Near')) return;
+            
+            try {
+                showToast('📍 Locating on map...', 'info');
+                const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query + ', India')}`);
+                const data = await response.json();
+                if (data && data.length > 0) {
+                    const lat = parseFloat(data[0].lat);
+                    const lon = parseFloat(data[0].lon);
+                    map.setView([lat, lon], 13);
+                    if (userMarker) map.removeLayer(userMarker);
+                    userMarker = L.marker([lat, lon], { draggable: true }).addTo(map);
+                    userMarker.bindPopup(`<b>${data[0].display_name.split(',')[0]}</b><br>Selected Location`).openPopup();
+                    showToast('✅ Location pinned!', 'success');
+                } else {
+                    showToast('⚠️ Location not found. Try adding district.', 'warning');
+                }
+            } catch (err) {
+                console.error("Geocoding failed", err);
+            }
+        });
+    }
+
     equipmentData.forEach(loc => {
         const m = L.marker([loc.lat, loc.lng]).addTo(map);
         m.on('click', () => {
