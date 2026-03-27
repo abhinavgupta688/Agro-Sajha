@@ -562,5 +562,33 @@ const lang = {
     driverExperience: "ਤਜਰਬਾ (ਸਾਲ)", driverContact: "ਫੋਨ ਨੰਬਰ", driverLocation: "ਪਿੰਡ/ਇਲਾਕਾ",
     driverRate: "ਰੋਜ਼ਾਨਾ ਕਿਰਾਇਆ (₹)", addDriver: "ਡਰਾਈਵਰ ਵਜੋਂ ਸ਼ਾਮਲ ਹੋਵੋ", availableDrivers: "ਉਪਲਬਧ ਡਰਾਈਵਰ",
     noDrivers: "ਅਜੇ ਕੋਈ ਡਰਾਈਵਰ ਰਜਿਸਟਰਡ ਨਹੀਂ ਹੈ।", driverSuccess: "ਸਫਲਤਾਪੂਰਵਕ ਰਜਿਸਟਰਡ!", forDrivers: "ਡਰਾਈਵਰਾਂ ਲਈ", yearsExp: "ਸਾਲ ਦਾ ਤਜਰਬਾ"
+  },
+  ne: { // Nepali
+    home: "गृह", book: "बुक गर्नुहोस", bookings: "मेरो बुकिङ", contact: "सम्पर्क", menu: "मेनु",
+    heroTitle: "किसानहरूलाई जोड्नुहोस्। सँगै बढ्नुहोस्।", heroSub: "शून्य कमिसन। ट्रयाक्टर र उपकरणहरू सजिलै भाडामा लिनुहोस्।",
+    bookNow: "उपकरण बुक गर्नुहोस्", register: "दर्ता गर्नुहोस्", bookEquipment: "उपकरण बुक गर्नुहोस्", whereNeed: "तपाईंलाई कहाँ आवश्यक छ?",
+    selectEquipment: "उपकरण छान्नुहोस्", tractor: "ट्रयाक्टर", harvester: "हार्वेस्टर", plough: "हलो",
+    irrigation: "सिंचाई", cultivator: "कल्टिभेटर", seedDrill: "सीड ड्रिल", thresher: "थ्रेसर", sprayer: "स्प्रेयर",
+    selectDate: "मिति", selectTime: "समय", duration: "कति घण्टा?",
+    hrs2: "२ घण्टा", hrs4: "४ घण्टा", hrs8: "८ घण्टा", hrs12: "१२ घण्टा", day1: "१ दिन",
+    total: "जम्मा", bookBtn: "अहिले बुक गर्नुहोस्", available: "उपलब्ध",
+    confirm: "निश्चित गर्नुहोस्", confirmBook: "निश्चित गरी बुक गर्नुहोस्", successTitle: "बुक भयो!",
+    successMsg: "तपाईंको बुकिङ निश्चित भयो।", bookingId: "बुकिङ आइडी", viewDetails: "हेर्नुहोस्", bookAnother: "फेरि बुक गर्नुहोस्",
+    aboutTitle: "SAJHA को बारेमा", aboutSub: "साना किसानहरूको लागि। कुनै कमिसन छैन।",
+    noCommission: "शून्य कमिसन", noCommissionDesc: "कुनै अतिरिक्त शुल्क छैन। मात्र भाडा तिर्नुहोस्।",
+    directConnect: "प्रत्यक्ष सम्पर्क", directConnectDesc: "उपकरण मालिकसँग सीधै कुरा गर्नुहोस्।",
+    cashUpi: "नगद र UPI", cashUpiDesc: "नगद वा फोनबाट पैसा तिर्नुहोस्।",
+    contactTitle: "हामीलाई सम्पर्क गर्नुहोस्", phone: "फोन", call: "कल गर्नुहोस्", address: "ठेगाना",
+    myBookings: "मेरो बुकिङ", noBookings: "कुनै बुकिङ छैन। आफ्नो पहिलो उपकरण बुक गर्नुहोस्!",
+    enterLocation: "आफ्नो गाउँ/क्षेत्र लेख्नुहोस्:", thankYou: "धन्यवाद! हामी तपाईंलाई चाँडै कल गर्नेछौं।",
+    ownerPortal: "मालिक पोर्टल", listEquipment: "उपकरण सूचिबद्ध गर्नुहोस्", equipTitle: "उपकरणको नाम",
+    priceHr: "प्रति घण्टा भाडा (₹)", availableFrom: "कहिलेबाट", availableTo: "कहिलेसम्म",
+    addListing: "अहिले नै सूचिबद्ध गर्नुहोस्", myListings: "मेरो उपकरणहरू", noListings: "अहिलेसम्म कुनै उपकरण सूचिबद्ध छैन।",
+    listingSuccess: "उपकरण सफलतापूर्वक दर्ता भयो!", forOwners: "मालिकहरूको लागि",
+    driverPortal: "चालक पोर्टल", registerAsDriver: "चालकको रूपमा दर्ता गर्नुहोस्", driverName: "पूरा नाम",
+    driverExperience: "अनुभव (वर्ष)", driverContact: "फोन नम्बर", driverLocation: "गाउँ/क्षेत्र",
+    driverRate: "दैनिक भाडा (₹)", addDriver: "चालकको रूपमा जोडिनुहोस्", availableDrivers: "उपलब्ध चालकहरू",
+    noDrivers: "अहिलेसम्म कुनै चालक दर्ता भएको छैन।", driverSuccess: "सफलतापूर्वक दर्ता भयो!", forDrivers: "चालकहरूको लागि", yearsExp: "वर्ष अनुभव"
   }
 };
+
