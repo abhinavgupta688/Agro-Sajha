@@ -3,89 +3,371 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Login - SAJHA</title>
+    <title>Login / Register - SAJHA</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body.auth-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 50%, #1565c0 100%);
+            padding: 20px;
+        }
+        .auth-card {
+            background: white;
+            border-radius: 20px;
+            padding: 36px 32px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+        }
+        .auth-header { text-align: center; margin-bottom: 24px; }
+        .auth-tabs {
+            display: flex;
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 4px;
+            margin-bottom: 20px;
+            gap: 4px;
+        }
+        .auth-tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.2s;
+            color: #666;
+        }
+        .auth-tab.active {
+            background: white;
+            color: #2e7d32;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .role-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .role-tab {
+            flex: 1;
+            padding: 12px 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 600;
+            font-size: 13px;
+            transition: 0.2s;
+            background: white;
+            color: #555;
+        }
+        .role-tab.active {
+            border-color: #2e7d32;
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        .role-tab i { display: block; font-size: 22px; margin-bottom: 6px; }
+        .input-box { margin-bottom: 16px; }
+        .input-box label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 6px;
+        }
+        .input-box input {
+            width: 100%;
+            padding: 13px 16px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: 0.2s;
+            box-sizing: border-box;
+        }
+        .input-box input:focus {
+            outline: none;
+            border-color: #2e7d32;
+            box-shadow: 0 0 0 3px rgba(46,125,50,0.12);
+        }
+        .auth-error {
+            background: #ffebee;
+            color: #c62828;
+            font-size: 13px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 14px;
+            display: none;
+            border: 1px solid #ffcdd2;
+        }
+        .auth-success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            font-size: 13px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 14px;
+            display: none;
+            border: 1px solid #c8e6c9;
+        }
+        .big-btn.primary.full {
+            width: 100%;
+            padding: 14px;
+            background: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+        .big-btn.primary.full:hover { background: #1b5e20; }
+        .divider {
+            text-align: center;
+            color: #999;
+            font-size: 13px;
+            margin: 16px 0;
+            position: relative;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 42%;
+            height: 1px;
+            background: #e0e0e0;
+        }
+        .divider::before { left: 0; }
+        .divider::after { right: 0; }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #999;
+            text-decoration: none;
+        }
+        .back-link:hover { color: #2e7d32; }
+    </style>
 </head>
 <body class="auth-wrapper">
 
     <div class="auth-card">
         <div class="auth-header">
-            <i class="fas fa-seedling" style="font-size: 50px; color: #2e7d32; margin-bottom: 20px;"></i>
-            <h1 id="authTitle" style="font-size: 24px; font-weight: 800; color: #333; margin-bottom: 8px;">Welcome to SAJHA</h1>
-            <p id="authSub" style="color: #666; font-size: 15px;">Select your role to continue</p>
+            <i class="fas fa-seedling" style="font-size: 48px; color: #2e7d32; margin-bottom: 16px;"></i>
+            <h1 id="authTitle" style="font-size: 22px; font-weight: 800; color: #333; margin-bottom: 6px;">Welcome to SAJHA</h1>
+            <p id="authSub" style="color: #666; font-size: 14px;">Agricultural platform for every farmer</p>
         </div>
 
+        <!-- Login / Register Tabs -->
         <div class="auth-tabs">
-            <div class="auth-tab active" id="tabFarmer" onclick="switchTab('farmer')">Farmer</div>
-            <div class="auth-tab" id="tabOwner" onclick="switchTab('owner')">Machine Owner</div>
+            <div class="auth-tab active" id="tabLogin" onclick="switchMode('login')">Login</div>
+            <div class="auth-tab" id="tabRegister" onclick="switchMode('register')">Register</div>
         </div>
 
+        <!-- Role Selection -->
+        <div class="role-tabs">
+            <div class="role-tab active" id="roleFarmer" onclick="switchRole('farmer')">
+                <i class="fas fa-tractor"></i>
+                Farmer
+            </div>
+            <div class="role-tab" id="roleOwner" onclick="switchRole('owner')">
+                <i class="fas fa-user-tie"></i>
+                Machine Owner
+            </div>
+        </div>
+
+        <div id="errorBox" class="auth-error"></div>
+        <div id="successBox" class="auth-success"></div>
+
+        <!-- Login Form -->
         <form id="loginForm">
             <div class="input-box">
-                <label id="phoneLabel">Mobile Number</label>
-                <input type="tel" placeholder="Enter 10 digit number" required>
+                <label>Mobile Number</label>
+                <input type="tel" id="loginPhone" placeholder="10-digit mobile number" maxlength="10" required>
             </div>
-            
             <div class="input-box">
-                <label id="pwdLabel">Password / OTP</label>
-                <input type="password" placeholder="••••••••" required>
+                <label>Password</label>
+                <input type="password" id="loginPassword" placeholder="Enter your password" required>
             </div>
-
-            <button type="submit" class="big-btn primary full" style="margin-top: 10px; padding: 14px;">Login</button>
+            <button type="submit" class="big-btn primary full">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+            <p style="text-align:center; margin-top:14px; font-size:13px; color:#666;">
+                Don't have account? <a href="#" onclick="switchMode('register')" style="color:#2e7d32; font-weight:700;">Register Now</a>
+            </p>
         </form>
 
-        <p style="text-align: center; margin-top: 24px; font-size: 14px; color: #666;">
-            Don't have an account? <a href="#" style="color: #2e7d32; font-weight: 700; text-decoration: none;">Register Now</a>
-        </p>
-        
-        <div style="text-align: center; margin-top: 32px;">
-            <a href="index.html" style="font-size: 14px; color: #999; text-decoration: none; font-weight: 500;">
-                <i class="fas fa-arrow-left"></i> Back to Home
-            </a>
-        </div>
+        <!-- Register Form -->
+        <form id="registerForm" style="display:none;">
+            <div class="input-box">
+                <label>Full Name</label>
+                <input type="text" id="regName" placeholder="Your full name" required>
+            </div>
+            <div class="input-box">
+                <label>Mobile Number</label>
+                <input type="tel" id="regPhone" placeholder="10-digit mobile number" maxlength="10" required>
+            </div>
+            <div class="input-box">
+                <label>Village / Area</label>
+                <input type="text" id="regVillage" placeholder="e.g. Rampur, UP" required>
+            </div>
+            <div class="input-box">
+                <label>Password</label>
+                <input type="password" id="regPassword" placeholder="Create a password (min 6 chars)" minlength="6" required>
+            </div>
+            <button type="submit" class="big-btn primary full">
+                <i class="fas fa-user-plus"></i> Create Account
+            </button>
+            <p style="text-align:center; margin-top:14px; font-size:13px; color:#666;">
+                Already registered? <a href="#" onclick="switchMode('login')" style="color:#2e7d32; font-weight:700;">Login Here</a>
+            </p>
+        </form>
+
+        <a href="index.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
     </div>
 
     <script>
+        let currentMode = 'login';
         let currentRole = 'farmer';
 
-        function switchTab(role) {
-            currentRole = role;
-            document.getElementById('tabFarmer').classList.toggle('active', role === 'farmer');
-            document.getElementById('tabOwner').classList.toggle('active', role === 'owner');
-            
-            const title = document.getElementById('authTitle');
-            const sub = document.getElementById('authSub');
-            
-            if(role === 'farmer') {
-                title.textContent = "Farmer Login";
-                sub.textContent = "Book machines for your farm";
-            } else {
-                title.textContent = "Owner Login";
-                sub.textContent = "Manage your machines & earnings";
-            }
+        // --- USER DB in localStorage ---
+        function getUsers() {
+            try { return JSON.parse(localStorage.getItem('sajhaUsers') || '[]'); }
+            catch(e) { return []; }
+        }
+        function saveUsers(users) {
+            localStorage.setItem('sajhaUsers', JSON.stringify(users));
         }
 
+        // Prepopulate demo users if none exist
+        (function seedDemoUsers() {
+            const users = getUsers();
+            if (users.length === 0) {
+                saveUsers([
+                    { name: 'Demo Farmer', phone: '9876543210', password: 'farmer123', role: 'farmer', village: 'Rampur' },
+                    { name: 'Demo Owner', phone: '9123456780', password: 'owner123', role: 'owner', village: 'Lucknow' }
+                ]);
+            }
+        })();
+
+        function switchMode(mode) {
+            currentMode = mode;
+            document.getElementById('tabLogin').classList.toggle('active', mode === 'login');
+            document.getElementById('tabRegister').classList.toggle('active', mode === 'register');
+            document.getElementById('loginForm').style.display = mode === 'login' ? 'block' : 'none';
+            document.getElementById('registerForm').style.display = mode === 'register' ? 'block' : 'none';
+            clearMessages();
+        }
+
+        function switchRole(role) {
+            currentRole = role;
+            document.getElementById('roleFarmer').classList.toggle('active', role === 'farmer');
+            document.getElementById('roleOwner').classList.toggle('active', role === 'owner');
+            clearMessages();
+        }
+
+        function showError(msg) {
+            const el = document.getElementById('errorBox');
+            el.textContent = '⚠️ ' + msg;
+            el.style.display = 'block';
+            document.getElementById('successBox').style.display = 'none';
+        }
+
+        function showSuccess(msg) {
+            const el = document.getElementById('successBox');
+            el.textContent = '✅ ' + msg;
+            el.style.display = 'block';
+            document.getElementById('errorBox').style.display = 'none';
+        }
+
+        function clearMessages() {
+            document.getElementById('errorBox').style.display = 'none';
+            document.getElementById('successBox').style.display = 'none';
+        }
+
+        // LOGIN
         document.getElementById('loginForm').onsubmit = (e) => {
             e.preventDefault();
-            // Mock Login Success
-            localStorage.setItem('sajhaUser', currentRole);
-            if(currentRole === 'farmer') {
-                location.href = 'index.html';
-            } else {
-                location.href = 'owner.html';
+            clearMessages();
+            const phone = document.getElementById('loginPhone').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            if (!/^\d{10}$/.test(phone)) {
+                showError('Enter a valid 10-digit mobile number.');
+                return;
             }
+            if (!password) {
+                showError('Please enter your password.');
+                return;
+            }
+
+            const users = getUsers();
+            const user = users.find(u => u.phone === phone && u.password === password && u.role === currentRole);
+
+            if (!user) {
+                showError(`No ${currentRole} account found with this number and password. Please register first.`);
+                return;
+            }
+
+            // Login success
+            localStorage.setItem('sajhaUser', currentRole);
+            localStorage.setItem('sajhaUserName', user.name);
+            localStorage.setItem('sajhaUserPhone', user.phone);
+            localStorage.setItem('sajhaUserVillage', user.village);
+
+            showSuccess(`Welcome back, ${user.name}! Redirecting...`);
+            setTimeout(() => {
+                location.href = currentRole === 'farmer' ? 'index.html' : 'owner.html';
+            }, 1000);
         };
 
-        // Handle translations if needed
+        // REGISTER
+        document.getElementById('registerForm').onsubmit = (e) => {
+            e.preventDefault();
+            clearMessages();
+            const name = document.getElementById('regName').value.trim();
+            const phone = document.getElementById('regPhone').value.trim();
+            const village = document.getElementById('regVillage').value.trim();
+            const password = document.getElementById('regPassword').value;
+
+            if (!name) { showError('Please enter your full name.'); return; }
+            if (!/^\d{10}$/.test(phone)) { showError('Enter a valid 10-digit mobile number.'); return; }
+            if (!village) { showError('Please enter your village/area.'); return; }
+            if (password.length < 6) { showError('Password must be at least 6 characters.'); return; }
+
+            const users = getUsers();
+            const existing = users.find(u => u.phone === phone && u.role === currentRole);
+            if (existing) {
+                showError(`A ${currentRole} account already exists with this number. Please login instead.`);
+                return;
+            }
+
+            users.push({ name, phone, password, role: currentRole, village });
+            saveUsers(users);
+
+            showSuccess(`Account created for ${name}! Please login now.`);
+            setTimeout(() => switchMode('login'), 1500);
+        };
+
+        // Apply saved language
         const lang = localStorage.getItem('sajhaLang') || 'en';
-        if(lang === 'hi') {
-            document.getElementById('tabFarmer').textContent = "किसान";
-            document.getElementById('tabOwner').textContent = "मशीन मालिक";
-            document.getElementById('phoneLabel').textContent = "मोबाइल नंबर";
-            document.getElementById('pwdLabel').textContent = "पासवर्ड / ओटीपी";
-            document.getElementById('authSub').textContent = "जारी रखने के लिए अपनी भूमिका चुनें";
+        if (lang === 'hi') {
+            document.getElementById('tabLogin').textContent = "लॉगिन";
+            document.getElementById('tabRegister').textContent = "रजिस्टर";
+            document.getElementById('roleFarmer').innerHTML = '<i class="fas fa-tractor"></i>किसान';
+            document.getElementById('roleOwner').innerHTML = '<i class="fas fa-user-tie"></i>मशीन मालिक';
+            document.getElementById('authSub').textContent = "हर किसान के लिए कृषि मंच";
         }
     </script>
 </body>

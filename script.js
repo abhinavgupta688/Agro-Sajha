@@ -40,6 +40,22 @@ const mandiRatesData = [
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
+    // One-time migration: clear old demo equipment that was wrongly saved to localStorage
+    // (old bug saved Ramesh Patel / Suresh Kumar etc. as if they were real owner listings)
+    try {
+        const saved = localStorage.getItem('sajhaOwnerEquipment');
+        if (saved) {
+            const equip = JSON.parse(saved);
+            // Old demo data had no 'ownerPhone' field — remove those to clean the slate
+            const demoNames = ['Ramesh Patel', 'Suresh Kumar', 'Amit Singh', 'Vijay Farm', 'Balvinder Seeders'];
+            const cleaned = equip.filter(e => e.ownerPhone !== undefined && !demoNames.includes(e.name));
+            if (cleaned.length !== equip.length) {
+                localStorage.setItem('sajhaOwnerEquipment', JSON.stringify(cleaned));
+                console.log('SAJHA: Cleaned up old demo equipment data.');
+            }
+        }
+    } catch(e) {}
+
     initMap();
     setMinDate();
     setDefaultTime();
@@ -373,13 +389,16 @@ function setupEvents() {
 
     document.getElementById('selectDealBtn')?.addEventListener('click', () => {
         const bestPrice = document.getElementById('bestOwnerPrice').dataset.price;
+        const ownerPhone = document.getElementById('bestOwnerPrice').dataset.ownerPhone;
         const activeEquip = document.querySelector('.equip-btn.active');
         if (activeEquip) {
             activeEquip.dataset.customPrice = bestPrice;
+            activeEquip.dataset.selectedOwnerPhone = ownerPhone || ''; // Store selected owner
             updatePrice();
         }
         document.getElementById('comparisonSection').style.display = 'none';
         updateCoins(10); // Reward for choosing local owner
+        showToast('✅ Better deal applied!', 'success');
     });
 
     // Success Screen
@@ -793,7 +812,10 @@ function setupEvents() {
 }
 
 function speakText(text) {
-    if (!window.speechSynthesis) return alert("Your phone does not support voice audio.");
+    if (!window.speechSynthesis) {
+        console.warn("Voice synthesis not supported in this browser.");
+        return;
+    }
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = currentLang === 'hi' ? 'hi-IN' : 'en-IN';
     window.speechSynthesis.speak(utterance);
@@ -937,7 +959,7 @@ function renderExchange() {
                 <span style="font-size:10px; background:#e8f5e9; color:var(--green); padding:2px 6px; border-radius:10px; font-weight:bold;">${item.type.toUpperCase()}</span>
             </div>
             <div style="font-size:13px; color:#666; margin:5px 0;">Shared by: ${item.farmer}</div>
-            <button class="big-btn secondary" onclick="alert('Contacting ${item.farmer} at ${item.contact}...')" style="padding:5px 10px; font-size:12px; height:auto; width:auto; border-radius:6px;">Contact Farmer</button>
+            <button class="big-btn secondary" onclick="showToast('📞 Request sent to ${item.farmer}. They will call you soon.', 'success')" style="padding:5px 10px; font-size:12px; height:auto; width:auto; border-radius:6px;">Contact Farmer</button>
         </div>
     `).join('');
 }
@@ -961,13 +983,18 @@ window.setPriceAlert = function (cropName, currentPrice) {
 // Auth UI Helper
 function updateAuthUI() {
     const userRole = localStorage.getItem('sajhaUser');
+    const userName = localStorage.getItem('sajhaUserName') || '';
     const loginBtn = document.getElementById('loginNavBtn');
-    
+
     if (userRole) {
+        const displayName = userName ? `${userName} (${userRole})` : userRole;
         if (loginBtn) {
-            loginBtn.innerHTML = `<i class="fas fa-sign-out-alt"></i> Logout (${userRole})`;
+            loginBtn.innerHTML = `<i class="fas fa-sign-out-alt"></i> Logout (${displayName})`;
             loginBtn.onclick = () => {
                 localStorage.removeItem('sajhaUser');
+                localStorage.removeItem('sajhaUserName');
+                localStorage.removeItem('sajhaUserPhone');
+                localStorage.removeItem('sajhaUserVillage');
                 location.reload();
             };
         }
@@ -1217,27 +1244,27 @@ function checkCheaperDeals(type, basePrice) {
         const saved = localStorage.getItem('sajhaOwnerEquipment');
         let ownerEquip = saved ? JSON.parse(saved) : [];
 
-        // Populate default demo data if no owner equipment exists
-        if (ownerEquip.length === 0) {
-            ownerEquip = [
-                { name: 'Ramesh Patel', type: 'tractor', price: '400', timing: '06:00 - 18:00' },
-                { name: 'Suresh Kumar', type: 'harvester', price: '1000', timing: '08:00 - 17:00' },
-                { name: 'Amit Singh', type: 'cultivator', price: '300', timing: '05:00 - 19:00' },
-                { name: 'Vijay Farm', type: 'sprayer', price: '200', timing: '07:00 - 20:00' },
-                { name: 'Balvinder Seeders', type: 'seedDrill', price: '350', timing: '06:00 - 18:00' }
-            ];
-            // Save to local storage so it persists and shows up in owner portal too
-            localStorage.setItem('sajhaOwnerEquipment', JSON.stringify(ownerEquip));
-        }
+        // Use demo data ONLY for display — DO NOT save it to localStorage
+        const demoEquip = [
+            { name: 'Ramesh Patel', type: 'tractor', price: '400', timing: '06:00 - 18:00', ownerPhone: '' },
+            { name: 'Suresh Kumar', type: 'harvester', price: '700', timing: '08:00 - 17:00', ownerPhone: '' },
+            { name: 'Amit Singh', type: 'cultivator', price: '300', timing: '05:00 - 19:00', ownerPhone: '' },
+            { name: 'Vijay Farm', type: 'sprayer', price: '200', timing: '07:00 - 20:00', ownerPhone: '' },
+            { name: 'Balvinder Seeders', type: 'seedDrill', price: '350', timing: '06:00 - 18:00', ownerPhone: '' }
+        ];
 
-        const deals = ownerEquip.filter(item => item.type === type && parseInt(item.price) < basePrice);
+        // Merge real owner listings with demo data (real listings take priority)
+        const allEquip = ownerEquip.length > 0 ? ownerEquip : demoEquip;
+
+        const deals = allEquip.filter(item => item.type === type && parseInt(item.price) < basePrice);
 
         if (deals.length > 0) {
             const bestDeal = deals.reduce((prev, curr) => (parseInt(prev.price) < parseInt(curr.price)) ? prev : curr);
             document.getElementById('bestOwnerName').textContent = bestDeal.name;
-            document.getElementById('bestOwnerPrice').textContent = '₹' + bestDeal.price + '/hr';
+            document.getElementById('bestOwnerPrice').textContent = '\u20b9' + bestDeal.price + '/hr';
             document.getElementById('bestOwnerPrice').dataset.price = bestDeal.price;
-            document.getElementById('savingsAmount').textContent = 'Save ₹' + (basePrice - parseInt(bestDeal.price)) + ' per hour';
+            document.getElementById('bestOwnerPrice').dataset.ownerPhone = bestDeal.ownerPhone || '';
+            document.getElementById('savingsAmount').textContent = 'Save \u20b9' + (basePrice - parseInt(bestDeal.price)) + ' per hour';
             compSection.style.display = 'block';
         } else {
             compSection.style.display = 'none';
@@ -1266,20 +1293,51 @@ function showModal() {
 
 function confirmBooking() {
     const id = 'SAJHA-' + new Date().getFullYear() + '-' + (Math.floor(Math.random() * 900) + 100);
+    const equip = document.querySelector('.equip-btn.active');
     const equipName = document.getElementById('modalEquipment').textContent;
     const totalRaw = document.getElementById('modalTotal').textContent;
     const total = parseInt(totalRaw.replace(/[,₹]/g, '')) || 0;
 
-    bookings.unshift({
+    const newBooking = {
         id,
         equipment: equipName,
         location: document.getElementById('modalLocation').textContent,
         dateTime: document.getElementById('modalDateTime').textContent,
         total: '₹' + total.toLocaleString(),
         status: 'Confirmed'
-    });
+    };
+
+    bookings.unshift(newBooking);
     localStorage.setItem('sajhaBookings', JSON.stringify(bookings));
     
+    // Create Booking Request for Owner
+    try {
+        const storedRequests = localStorage.getItem('sajhaBookingRequests');
+        const bookingReqs = storedRequests ? JSON.parse(storedRequests) : [];
+        
+        // Use specifically selected owner if exists, otherwise find first matching by type
+        let targetedOwnerPhone = equip?.dataset.selectedOwnerPhone || '';
+        
+        if (!targetedOwnerPhone) {
+            const savedEquip = localStorage.getItem('sajhaOwnerEquipment');
+            const allEquip = savedEquip ? JSON.parse(savedEquip) : [];
+            const matched = allEquip.find(e => e.type === equip?.dataset.type);
+            if (matched) targetedOwnerPhone = matched.ownerPhone;
+        }
+
+        const farmerName = localStorage.getItem('sajhaUserName') || 'Test Farmer';
+        const farmerPhone = localStorage.getItem('sajhaUserPhone') || '9876543210';
+
+        bookingReqs.unshift({
+            ...newBooking,
+            ownerPhone: targetedOwnerPhone,
+            farmerName: farmerName,
+            farmerPhone: farmerPhone,
+            reqTime: new Date().toLocaleString()
+        });
+        localStorage.setItem('sajhaBookingRequests', JSON.stringify(bookingReqs));
+    } catch(e) { console.error("Request error", e); }
+
     // Update Ledger
     if (typeof updateLedger === 'function') {
         updateLedger('expense', total, `Booked ${equipName}`);
@@ -1367,8 +1425,8 @@ window.trackBooking = function (id) {
 
     // Call Driver Simulation
     document.getElementById('callDriverBtn').onclick = () => {
-        alert("Calling Driver for booking " + id + "...");
-        window.location.href = "tel:+919876543210";
+        showToast('📞 Connecting to driver for booking ' + id + '...', 'info');
+        setTimeout(() => { window.location.href = "tel:+919876543210"; }, 800);
     };
 };
 

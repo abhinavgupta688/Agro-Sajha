@@ -192,9 +192,13 @@
     <header class="owner-header">
         <h1 data-i18n="ownerPortal">Owner Portal</h1>
         <p data-i18n="heroSub">Zero commission. Rent your equipment easily.</p>
+        <p id="ownerWelcome" style="margin-top:8px; font-size:14px; opacity:0.85;"></p>
     </header>
 
     <main class="owner-container">
+        <!-- Global Message -->
+        <div id="ownerMsg" style="display:none; grid-column:1/-1;"></div>
+
         <!-- Add Equipment Form -->
         <section class="card">
             <h2 data-i18n="listEquipment"><i class="fas fa-plus-circle"></i> List Equipment</h2>
@@ -245,6 +249,18 @@
             <div id="equipmentList" class="my-equipment">
                 <!-- Items will be injected here -->
             </div>
+        </section>
+
+        <!-- Incoming Booking Requests from Farmers -->
+        <section class="card" style="grid-column: 1 / -1; margin-top: 24px;">
+            <h2 style="color: #1565c0;"><i class="fas fa-inbox"></i> <span>Incoming Booking Requests</span></h2>
+            <p style="font-size:13px; color:#666; margin-bottom:16px;">These are requests from farmers for your listed equipment.</p>
+            <div id="incomingBookings" style="max-height:500px; overflow-y:auto;">
+                <!-- Injected by owner.js -->
+            </div>
+            <button onclick="renderIncomingBookings()" style="margin-top:12px; background:#e3f2fd; color:#1565c0; border:none; padding:10px 20px; border-radius:8px; font-weight:600; cursor:pointer; font-family:inherit; width:100%;">
+                <i class="fas fa-sync-alt"></i> Refresh Requests
+            </button>
         </section>
 
         <!-- Demand Insights (AI Feature) -->

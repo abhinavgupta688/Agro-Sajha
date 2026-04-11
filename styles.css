@@ -400,7 +400,7 @@ input,
     max-width: 100%;
     margin: 0 auto;
     background: var(--cream);
-    padding: 28px;
+    padding: 28px 28px 100px; /* Extra bottom padding so Book Now is never hidden */
     border-radius: 12px;
     border: 1px solid var(--border);
 }
@@ -1037,24 +1037,24 @@ input,
     color: var(--text);
 }
 
-/* Voice Command Button */
+/* Voice Command Button — positioned above bottom nav bar */
 .voice-btn {
     position: fixed;
-    bottom: 24px;
-    right: 24px;
-    width: 56px;
-    height: 56px;
+    bottom: 80px;  /* Raised above the bottom nav */
+    right: 16px;
+    width: 52px;
+    height: 52px;
     background: var(--green);
     color: white;
     border: none;
     border-radius: 50%;
-    font-size: 24px;
+    font-size: 22px;
     cursor: pointer;
     box-shadow: var(--shadow-lg);
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
+    z-index: 900;  /* Below modals/overlays */
     transition: all 0.3s;
 }
 
@@ -1279,15 +1279,15 @@ input,
     to   { opacity: 0; transform: scale(0.9); }
 }
 
-/* PWA Install Banner */
+/* PWA Install Banner — moved to TOP so it never blocks Book Now button */
 #pwaInstallBanner {
     position: fixed;
-    bottom: 72px;
+    top: 72px;
     left: 50%;
     transform: translateX(-50%);
     background: linear-gradient(135deg, #1b5e20, #2e7d32);
     color: white;
-    padding: 14px 18px;
+    padding: 12px 16px;
     border-radius: 14px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.2);
     z-index: 8000;

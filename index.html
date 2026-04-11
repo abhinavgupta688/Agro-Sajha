@@ -30,7 +30,7 @@
 
     <!-- Theme Toggle & Global Toast -->
     <div id="toastContainer"
-        style="position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 10000; display: flex; flex-direction: column; gap: 10px;">
+        style="position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 10000; display: flex; flex-direction: column; gap: 10px; max-width: 360px; width: calc(100% - 40px);">
     </div>
 
     <!-- AI Scan Scanning Overlay -->
@@ -814,39 +814,30 @@
                             style="display: block; text-align: center; text-decoration: none; background: var(--green);">Apply
                             on Portal <i class="fas fa-arrow-right"></i></a>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                    <!-- E-Chaupal Video Modal -->
-                    <div class="overlay modal" id="videoModal">
-                        <div class="panel" style="max-width: 600px;">
-                            <div class="panel-head">
-                                <h2><i class="fas fa-video"></i> Live: Expert Consultation</h2>
-                                <button class="close-btn" data-close="videoModal"><i class="fas fa-times"></i></button>
-                            </div>
-                            <div class="panel-body" style="padding: 0;">
-                                <div
-                                    style="width: 100%; aspect-ratio: 16/9; background: #000; position: relative; display: flex; align-items: center; justify-content: center;">
-                                    <i class="fas fa-user-tie" style="font-size: 80px; color: #333;"></i>
-                                    <div
-                                        style="position: absolute; bottom: 20px; left: 20px; background: rgba(0,0,0,0.6); padding: 8px 12px; border-radius: 8px; color: white;">
-                                        <span style="font-size: 12px; opacity: 0.8;">Speaker:</span><br><strong>Dr.
-                                            Ramesh Sharma</strong>
-                                    </div>
-                                </div>
-                                <div
-                                    style="padding: 20px; background: #f9f9f9; display: flex; justify-content: space-around;">
-                                    <button class="voice-btn"
-                                        style="position: static; box-shadow: none; background: #f44336; color: white;"><i
-                                            class="fas fa-microphone-slash"></i></button>
-                                    <button class="voice-btn"
-                                        style="position: static; box-shadow: none; background: #4caf50; color: white;"><i
-                                            class="fas fa-hand-paper"></i></button>
-                                    <button class="voice-btn"
-                                        style="position: static; box-shadow: none; background: #555; color: white;"
-                                        data-close="videoModal"><i class="fas fa-phone-slash"></i></button>
-                                </div>
-                            </div>
-                        </div>
+    <!-- E-Chaupal Video Modal (top-level — fixed nesting bug) -->
+    <div class="overlay modal" id="videoModal">
+        <div class="panel" style="max-width: 600px;">
+            <div class="panel-head">
+                <h2><i class="fas fa-video"></i> Live: Expert Consultation</h2>
+                <button class="close-btn" data-close="videoModal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="panel-body" style="padding: 0;">
+                <div style="width: 100%; aspect-ratio: 16/9; background: #000; position: relative; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-user-tie" style="font-size: 80px; color: #333;"></i>
+                    <div style="position: absolute; bottom: 20px; left: 20px; background: rgba(0,0,0,0.6); padding: 8px 12px; border-radius: 8px; color: white;">
+                        <span style="font-size: 12px; opacity: 0.8;">Speaker:</span><br><strong>Dr. Ramesh Sharma</strong>
                     </div>
+                    <div style="position:absolute; top:12px; right:12px; background:#d32f2f; padding:4px 10px; border-radius:4px; font-size:12px; font-weight:bold; color:white; animation: pulse 2s infinite;">● LIVE</div>
+                </div>
+                <div style="padding: 20px; background: #f9f9f9; display: flex; justify-content: space-around; gap: 12px;">
+                    <button class="voice-btn" style="position: static; box-shadow: none; background: #f44336; color: white;" title="Mute"><i class="fas fa-microphone-slash"></i></button>
+                    <button class="voice-btn" style="position: static; box-shadow: none; background: #4caf50; color: white;" title="Raise Hand"><i class="fas fa-hand-paper"></i></button>
+                    <button class="voice-btn" style="position: static; box-shadow: none; background: #555; color: white;" data-close="videoModal" title="Leave"><i class="fas fa-phone-slash"></i></button>
                 </div>
             </div>
         </div>
